@@ -14,10 +14,25 @@ const path = require('path');
 const os = require('os');
 
 const VALID_MODES = [
-  'off', 'lite', 'full', 'ultra',
+  'off', 'lite', 'full', 'full-plus', 'ultra',
+  'mello-lite', 'mello', 'mello-full', 'mello-ultra',
   'wenyan-lite', 'wenyan', 'wenyan-full', 'wenyan-ultra',
   'commit', 'review', 'compress'
 ];
+
+const GENERAL_MODES = [
+  'lite', 'full', 'full-plus', 'ultra',
+  'mello-lite', 'mello', 'mello-full', 'mello-ultra'
+];
+
+function normalizeMode(mode) {
+  const raw = String(mode || '').trim().toLowerCase();
+  if (raw === 'mello-full') return 'mello';
+  if (raw === 'wenyan-lite') return 'mello-lite';
+  if (raw === 'wenyan' || raw === 'wenyan-full') return 'mello';
+  if (raw === 'wenyan-ultra') return 'mello-ultra';
+  return raw;
+}
 
 function getConfigDir() {
   if (process.env.XDG_CONFIG_HOME) {
@@ -38,17 +53,18 @@ function getConfigPath() {
 
 function getDefaultMode() {
   // 1. Environment variable (highest priority)
-  const envMode = process.env.CAVEMAN_DEFAULT_MODE;
-  if (envMode && VALID_MODES.includes(envMode.toLowerCase())) {
-    return envMode.toLowerCase();
+  const envMode = normalizeMode(process.env.CAVEMAN_DEFAULT_MODE);
+  if (envMode && VALID_MODES.includes(envMode)) {
+    return envMode;
   }
 
   // 2. Config file
   try {
     const configPath = getConfigPath();
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    if (config.defaultMode && VALID_MODES.includes(config.defaultMode.toLowerCase())) {
-      return config.defaultMode.toLowerCase();
+    const configMode = normalizeMode(config.defaultMode);
+    if (configMode && VALID_MODES.includes(configMode)) {
+      return configMode;
     }
   } catch (e) {
     // Config file doesn't exist or is invalid — fall through
@@ -115,7 +131,7 @@ function safeWriteFlag(flagPath, content) {
 // reader — statusline, per-turn reinforcement — would slurp that content and
 // either echo it to the terminal or inject it into model context.
 //
-// MAX_FLAG_BYTES is a hard cap. The longest legitimate value is "wenyan-ultra"
+// MAX_FLAG_BYTES is a hard cap. The longest legitimate value is "mello-ultra"
 // (12 bytes); 64 leaves slack without enabling exfil.
 const MAX_FLAG_BYTES = 64;
 
@@ -151,4 +167,13 @@ function readFlag(flagPath) {
   }
 }
 
-module.exports = { getDefaultMode, getConfigDir, getConfigPath, VALID_MODES, safeWriteFlag, readFlag };
+module.exports = {
+  GENERAL_MODES,
+  VALID_MODES,
+  getDefaultMode,
+  getConfigDir,
+  getConfigPath,
+  normalizeMode,
+  safeWriteFlag,
+  readFlag
+};

@@ -9,13 +9,13 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { getDefaultMode, safeWriteFlag } = require('./caveman-config');
+const { getDefaultMode, normalizeMode, safeWriteFlag } = require('./caveman-config');
 
 const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
 const flagPath = path.join(claudeDir, '.caveman-active');
 const settingsPath = path.join(claudeDir, 'settings.json');
 
-const mode = getDefaultMode();
+const mode = normalizeMode(getDefaultMode());
 
 // "off" mode — skip activation entirely, don't write flag or emit rules
 if (mode === 'off') {
@@ -44,8 +44,8 @@ if (INDEPENDENT_MODES.has(mode)) {
   process.exit(0);
 }
 
-// Resolve the canonical label for wenyan alias
-const modeLabel = mode === 'wenyan' ? 'wenyan-full' : mode;
+// Resolve canonical label for display and filtering.
+const modeLabel = mode === 'mello' ? 'mello' : mode;
 
 // Read SKILL.md — the single source of truth for caveman behavior.
 // Plugin installs: __dirname = <plugin_root>/hooks/, SKILL.md at <plugin_root>/skills/caveman/SKILL.md
@@ -97,7 +97,7 @@ if (skillContent) {
     'Respond terse like smart caveman. All technical substance stay. Only fluff die.\n\n' +
     '## Persistence\n\n' +
     'ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift. Still active if unsure. Off only: "stop caveman" / "normal mode".\n\n' +
-    'Current level: **' + modeLabel + '**. Switch: `/caveman lite|full|ultra`.\n\n' +
+    'Current level: **' + modeLabel + '**. Switch: `/caveman lite|full|full-plus|ultra|mello-lite|mello|mello-ultra`.\n\n' +
     '## Rules\n\n' +
     'Drop: articles (a/an/the), filler (just/really/basically/actually/simply), pleasantries (sure/certainly/of course/happy to), hedging. ' +
     'Fragments OK. Short synonyms (big not extensive, fix not "implement a solution for"). Technical terms exact. Code blocks unchanged. Errors quoted exact.\n\n' +

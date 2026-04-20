@@ -17,12 +17,13 @@ If you installed caveman standalone (without the plugin), you can use `bash hook
 
 - Fires on every user prompt, checks for `/caveman` commands
 - Writes the active mode to the flag file when a caveman command is detected
-- Supports: `full`, `lite`, `ultra`, `wenyan`, `wenyan-lite`, `wenyan-ultra`, `commit`, `review`, `compress`
+- Supports: `full`, `full-plus`, `lite`, `ultra`, `mello`, `mello-lite`, `mello-ultra`, `commit`, `review`, `compress`
+  - `full-plus`: English-only artifact-first mode. Newest ask only, one default path, smallest usable artifact, no workspace inspection or blocker preamble unless file edits were requested.
 
 ### `caveman-statusline.sh` / `caveman-statusline.ps1` — Statusline badge script
 
 - Reads `~/.claude/.caveman-active` and outputs a colored badge
-- Shows `[CAVEMAN]`, `[CAVEMAN:ULTRA]`, `[CAVEMAN:WENYAN]`, etc.
+- Shows `[CAVEMAN]`, `[CAVEMAN:FULL-PLUS]`, `[CAVEMAN:ULTRA]`, `[CAVEMAN:MELLO]`, etc.
 
 ## Statusline Badge
 
@@ -75,7 +76,7 @@ fi
 Badge examples:
 - `/caveman` → `[CAVEMAN]`
 - `/caveman ultra` → `[CAVEMAN:ULTRA]`
-- `/caveman wenyan` → `[CAVEMAN:WENYAN]`
+- `/caveman mello` → `[CAVEMAN:MELLO]`
 - `/caveman-commit` → `[CAVEMAN:COMMIT]`
 - `/caveman-review` → `[CAVEMAN:REVIEW]`
 

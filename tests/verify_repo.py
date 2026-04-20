@@ -108,8 +108,12 @@ def verify_manifests_and_syntax() -> None:
     run(["node", "--check", "hooks/caveman-config.js"])
     run(["node", "--check", "hooks/caveman-activate.js"])
     run(["node", "--check", "hooks/caveman-mode-tracker.js"])
+    run(["node", "--check", "hooks/codex-caveman-activate.js"])
+    run(["node", "--check", "hooks/codex-caveman-mode-tracker.js"])
     run(["bash", "-n", "hooks/install.sh"])
     run(["bash", "-n", "hooks/uninstall.sh"])
+    run(["bash", "-n", "hooks/install-codex-global.sh"])
+    run(["bash", "-n", "hooks/uninstall-codex-global.sh"])
     run(["bash", "-n", "hooks/caveman-statusline.sh"])
 
     # Ensure install/uninstall scripts include caveman-config.js
@@ -195,6 +199,15 @@ def verify_compress_cli() -> None:
     print("Compress CLI skip/error paths OK")
 
 
+def verify_mode_matrix_harness() -> None:
+    section("Mode Matrix Harness")
+
+    ensure(shutil.which("node") is not None, "node is required for mode matrix verification")
+    run(["python3", "benchmarks/mode_matrix.py", "--validate-only"], cwd=ROOT)
+
+    print("Mode matrix benchmark config OK")
+
+
 def verify_hook_install_flow() -> None:
     section("Claude Hook Flow")
 
@@ -225,7 +238,7 @@ def verify_hook_install_flow() -> None:
             ["node", "hooks/caveman-activate.js"],
             env={"HOME": str(home)},
         )
-        ensure("CAVEMAN MODE ACTIVE." in activate.stdout, "activation output missing caveman banner")
+        ensure("CAVEMAN MODE ACTIVE" in activate.stdout, "activation output missing caveman banner")
         ensure("STATUSLINE SETUP NEEDED" not in activate.stdout, "activation should stay quiet when custom statusline exists")
         ensure((claude_dir / ".caveman-active").read_text() == "full", "activation flag should default to full")
 
@@ -234,7 +247,7 @@ def verify_hook_install_flow() -> None:
             ["node", "hooks/caveman-activate.js"],
             env={"HOME": str(home), "CAVEMAN_DEFAULT_MODE": "ultra"},
         )
-        ensure("CAVEMAN MODE ACTIVE." in activate_custom.stdout, "activation with custom default missing banner")
+        ensure("CAVEMAN MODE ACTIVE" in activate_custom.stdout, "activation with custom default missing banner")
         ensure((claude_dir / ".caveman-active").read_text() == "ultra", "CAVEMAN_DEFAULT_MODE=ultra should set flag to ultra")
         # Test "off" mode — activation skipped, flag removed
         activate_off = run(
@@ -274,7 +287,7 @@ def verify_hook_install_flow() -> None:
             capture_output=True,
             check=True,
         )
-        ensure(ultra_prompt.stdout == "", "mode tracker should stay silent")
+        ensure("CAVEMAN MODE ACTIVE" in ultra_prompt.stdout, "mode tracker should emit reminder context")
         ensure((claude_dir / ".caveman-active").read_text() == "ultra", "mode tracker did not record ultra")
 
         subprocess.run(
@@ -288,12 +301,12 @@ def verify_hook_install_flow() -> None:
         )
         ensure(not (claude_dir / ".caveman-active").exists(), "normal mode should remove flag file")
 
-        (claude_dir / ".caveman-active").write_text("wenyan-ultra")
+        (claude_dir / ".caveman-active").write_text("mello-ultra")
         statusline = run(
             ["bash", "hooks/caveman-statusline.sh"],
             env={"HOME": str(home)},
         )
-        ensure("[CAVEMAN:WENYAN-ULTRA]" in statusline.stdout, "statusline badge output mismatch")
+        ensure("[CAVEMAN:MELLO-ULTRA]" in statusline.stdout, "statusline badge output mismatch")
 
         reinstall = run(["bash", "hooks/install.sh"], env={"HOME": str(home)})
         ensure("Nothing to do" in reinstall.stdout, "install.sh should be idempotent")
@@ -317,6 +330,120 @@ def verify_hook_install_flow() -> None:
     print("Claude hook install/uninstall flow OK")
 
 
+def verify_codex_global_install_flow() -> None:
+    section("Codex Global Install Flow")
+
+    ensure(shutil.which("node") is not None, "node is required for Codex verification")
+    ensure(shutil.which("bash") is not None, "bash is required for Codex verification")
+
+    with tempfile.TemporaryDirectory(prefix="caveman-codex-verify-") as temp_root:
+        temp_root_path = Path(temp_root)
+        home = temp_root_path / "home"
+        codex_dir = home / ".codex"
+        skills_dir = home / ".agents" / "skills"
+        codex_dir.mkdir(parents=True)
+        skills_dir.mkdir(parents=True)
+
+        (codex_dir / "config.toml").write_text('model = "gpt-5.4"\n')
+        (codex_dir / "hooks.json").write_text(json.dumps({
+            "hooks": {
+                "Stop": [{"hooks": [{"type": "command", "command": "echo keep-me"}]}]
+            }
+        }, indent=2) + "\n")
+
+        run(["bash", "hooks/install-codex-global.sh"], env={"HOME": str(home), "CODEX_HOME": str(codex_dir)})
+
+        config_text = (codex_dir / "config.toml").read_text()
+        ensure("[features]" in config_text, "config.toml missing [features]")
+        ensure("codex_hooks = true" in config_text, "config.toml missing codex_hooks enable")
+
+        hooks = read_json(codex_dir / "hooks.json")
+        ensure("SessionStart" in hooks["hooks"], "hooks.json missing SessionStart")
+        ensure("UserPromptSubmit" in hooks["hooks"], "hooks.json missing UserPromptSubmit")
+        ensure("Stop" in hooks["hooks"], "hooks.json should preserve existing hooks")
+
+        ensure((codex_dir / "hooks" / "codex-caveman-activate.js").exists(), "Codex activation hook missing")
+        ensure((codex_dir / "hooks" / "codex-caveman-mode-tracker.js").exists(), "Codex mode tracker hook missing")
+
+        ensure((skills_dir / "caveman" / "SKILL.md").exists(), "Global caveman skill missing")
+        ensure((skills_dir / "caveman-commit" / "SKILL.md").exists(), "Global caveman-commit skill missing")
+        ensure(not (skills_dir / "caveman-review").exists(), "Global caveman-review skill should stay uninstalled")
+
+        activate = run(
+            ["node", str(codex_dir / "hooks" / "codex-caveman-activate.js")],
+            env={"HOME": str(home), "CODEX_HOME": str(codex_dir)},
+        )
+        ensure("CAVEMAN MODE ACTIVE" in activate.stdout, "Codex activation output missing caveman banner")
+        ensure((codex_dir / ".caveman-active").read_text() == "full", "Codex activation flag should default to full")
+        ensure((codex_dir / ".caveman-general-mode").read_text() == "full", "Codex should persist general default mode")
+
+        commit_tracker = subprocess.run(
+            ["node", str(codex_dir / "hooks" / "codex-caveman-mode-tracker.js")],
+            cwd=ROOT,
+            env={**os.environ, "HOME": str(home), "CODEX_HOME": str(codex_dir)},
+            text=True,
+            input='{"prompt":"write a commit message for jwt expiry fix"}',
+            capture_output=True,
+            check=True,
+        )
+        ensure("CAVEMAN commit active" in commit_tracker.stdout, "commit tasks should auto-route to commit mode")
+        ensure((codex_dir / ".caveman-active").read_text() == "commit", "commit routing should write commit mode")
+
+        restored_tracker = subprocess.run(
+            ["node", str(codex_dir / "hooks" / "codex-caveman-mode-tracker.js")],
+            cwd=ROOT,
+            env={**os.environ, "HOME": str(home), "CODEX_HOME": str(codex_dir)},
+            text=True,
+            input='{"prompt":"explain git rebase vs merge"}',
+            capture_output=True,
+            check=True,
+        )
+        ensure("CAVEMAN full active" in restored_tracker.stdout, "normal tasks should restore general caveman mode")
+        ensure((codex_dir / ".caveman-active").read_text() == "full", "normal tasks should restore general mode")
+
+        review_tracker = subprocess.run(
+            ["node", str(codex_dir / "hooks" / "codex-caveman-mode-tracker.js")],
+            cwd=ROOT,
+            env={**os.environ, "HOME": str(home), "CODEX_HOME": str(codex_dir)},
+            text=True,
+            input='{"prompt":"review this diff for security bugs"}',
+            capture_output=True,
+            check=True,
+        )
+        ensure(review_tracker.stdout == "", "review tasks should stay off for max quality")
+        ensure(not (codex_dir / ".caveman-active").exists(), "review tasks should clear active caveman mode")
+
+        restore_after_review = subprocess.run(
+            ["node", str(codex_dir / "hooks" / "codex-caveman-mode-tracker.js")],
+            cwd=ROOT,
+            env={**os.environ, "HOME": str(home), "CODEX_HOME": str(codex_dir)},
+            text=True,
+            input='{"prompt":"explain postgres connection pooling"}',
+            capture_output=True,
+            check=True,
+        )
+        ensure("CAVEMAN full active" in restore_after_review.stdout, "non-review prompts should recover general mode after review")
+        ensure((codex_dir / ".caveman-active").read_text() == "full", "general mode should recover after review")
+
+        tracker = subprocess.run(
+            ["node", str(codex_dir / "hooks" / "codex-caveman-mode-tracker.js")],
+            cwd=ROOT,
+            env={**os.environ, "HOME": str(home), "CODEX_HOME": str(codex_dir)},
+            text=True,
+            input='{"prompt":"normal mode"}',
+            capture_output=True,
+            check=True,
+        )
+        ensure(tracker.stdout == "", "normal mode should not emit reminder")
+        ensure(not (codex_dir / ".caveman-active").exists(), "normal mode should remove Codex caveman flag")
+
+        run(["bash", "hooks/uninstall-codex-global.sh"], env={"HOME": str(home), "CODEX_HOME": str(codex_dir)})
+        ensure(not (skills_dir / "caveman").exists(), "uninstall should remove global caveman skill")
+        ensure(not (codex_dir / "hooks" / "codex-caveman-activate.js").exists(), "uninstall should remove activation hook")
+
+    print("Codex global install/uninstall flow OK")
+
+
 def main() -> int:
     checks = [
         verify_synced_files,
@@ -324,7 +451,9 @@ def main() -> int:
         verify_powershell_static,
         verify_compress_fixtures,
         verify_compress_cli,
+        verify_mode_matrix_harness,
         verify_hook_install_flow,
+        verify_codex_global_install_flow,
     ]
 
     try:

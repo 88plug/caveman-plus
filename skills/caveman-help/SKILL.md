@@ -16,10 +16,11 @@ Display this reference card when invoked. One-shot — do NOT change mode, write
 |------|---------|-------------|
 | **Lite** | `/caveman lite` | Drop filler. Keep sentence structure. |
 | **Full** | `/caveman` | Drop articles, filler, pleasantries, hedging. Fragments OK. Default. |
+| **Full-Plus** | `/caveman full-plus` | English-only full-plus. Newest ask only, one path, smallest usable artifact, no workspace inspection for conceptual asks. |
 | **Ultra** | `/caveman ultra` | Extreme compression. Bare fragments. Tables over prose. |
-| **Wenyan-Lite** | `/caveman wenyan-lite` | Classical Chinese style, light compression. |
-| **Wenyan-Full** | `/caveman wenyan` | Full 文言文. Maximum classical terseness. |
-| **Wenyan-Ultra** | `/caveman wenyan-ultra` | Extreme. Ancient scholar on a budget. |
+| **Mello-Lite** | `/caveman mello-lite` | Light same-language compression. |
+| **Mello** | `/caveman mello` | Strong same-language compression. |
+| **Mello-Ultra** | `/caveman mello-ultra` | Extreme same-language compression. |
 
 Mode stick until changed or session end.
 
@@ -53,6 +54,9 @@ export CAVEMAN_DEFAULT_MODE=ultra
 Set `"off"` to disable auto-activation on session start. User can still activate manually with `/caveman`.
 
 Resolution: env var > config file > `full`.
+
+Compatibility:
+- Old `wenyan-*` commands still map to `mello-*`
 
 ## More
 
