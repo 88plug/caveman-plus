@@ -7,6 +7,7 @@ set -e
 
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 HOOKS_DIR="$CLAUDE_DIR/hooks"
+SKILL_DIR="$CLAUDE_DIR/skills/caveman"
 SETTINGS="$CLAUDE_DIR/settings.json"
 FLAG_FILE="$CLAUDE_DIR/.caveman-active"
 
@@ -117,6 +118,13 @@ fi
 if [ -f "$FLAG_FILE" ]; then
   rm "$FLAG_FILE"
   echo "  Removed: $FLAG_FILE"
+fi
+
+# 5. Remove standalone skill copy if present
+if [ -f "$SKILL_DIR/SKILL.md" ]; then
+  rm "$SKILL_DIR/SKILL.md"
+  echo "  Removed: $SKILL_DIR/SKILL.md"
+  rmdir "$SKILL_DIR" 2>/dev/null || true
 fi
 
 echo ""

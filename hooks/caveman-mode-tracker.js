@@ -83,12 +83,21 @@ process.stdin.on('end', () => {
     const INDEPENDENT_MODES = new Set(['commit', 'review', 'compress']);
     const activeMode = readFlag(flagPath);
     if (activeMode && !INDEPENDENT_MODES.has(activeMode)) {
+      const reminders = {
+        lite: 'CAVEMAN MODE ACTIVE (lite). Concise, direct, low-filler prose.',
+        full: 'CAVEMAN MODE ACTIVE (full). Drop articles/filler/hedging. Fragments OK. Code/commits/security: write normal.',
+        'full-plus': 'CAVEMAN MODE ACTIVE (full-plus). English only. Newest ask only. One path. Explainers: plain mechanism prose. Bug-fix/debug: root cause + direct fix. Summary/comment/note/PR/checklist: polished artifact matching requested format. No workspace inspection unless asked to patch/run here.',
+        ultra: 'CAVEMAN MODE ACTIVE (ultra). Very terse. Abbrev when clear. Code/commits/security: write normal.',
+        'mello-lite': 'CAVEMAN MODE ACTIVE (mello-lite). Light same-language compression. Code/commits/security: write normal.',
+        mello: 'CAVEMAN MODE ACTIVE (mello). Strong same-language compression. Code/commits/security: write normal.',
+        'mello-ultra': 'CAVEMAN MODE ACTIVE (mello-ultra). Extreme same-language compression. Code/commits/security: write normal.'
+      };
+      const additionalContext = reminders[activeMode] ||
+        ('CAVEMAN MODE ACTIVE (' + activeMode + '). Drop articles/filler/pleasantries/hedging. Fragments OK. Code/commits/security: write normal.');
       process.stdout.write(JSON.stringify({
         hookSpecificOutput: {
           hookEventName: "UserPromptSubmit",
-          additionalContext: "CAVEMAN MODE ACTIVE (" + activeMode + "). " +
-            "Drop articles/filler/pleasantries/hedging. Fragments OK. " +
-            "Code/commits/security: write normal."
+          additionalContext
         }
       }));
     }

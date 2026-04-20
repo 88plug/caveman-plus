@@ -8,6 +8,7 @@ $ErrorActionPreference = "Stop"
 
 $ClaudeDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $env:USERPROFILE ".claude" }
 $HooksDir = Join-Path $ClaudeDir "hooks"
+$SkillDir = Join-Path (Join-Path $ClaudeDir "skills") "caveman"
 $Settings = Join-Path $ClaudeDir "settings.json"
 $FlagFile = Join-Path $ClaudeDir ".caveman-active"
 
@@ -122,6 +123,16 @@ console.log('  Removed ' + removed + ' caveman hook entries from settings.json')
 if (Test-Path $FlagFile) {
     Remove-Item $FlagFile -Force
     Write-Host "  Removed: $FlagFile"
+}
+
+# 4. Remove standalone skill copy if present
+$SkillFile = Join-Path $SkillDir "SKILL.md"
+if (Test-Path $SkillFile) {
+    Remove-Item $SkillFile -Force
+    Write-Host "  Removed: $SkillFile"
+    try {
+        Remove-Item $SkillDir -Force
+    } catch {}
 }
 
 Write-Host ""

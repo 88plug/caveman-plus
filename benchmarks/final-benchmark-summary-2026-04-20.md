@@ -2,7 +2,7 @@
 
 Date: `2026-04-20`
 
-This branch captures the final Codex benchmark pass for the current `full-plus` tuning.
+This branch captures the final benchmark pass for the current `full-plus` tuning, plus Claude Code standalone parity changes so standalone hooks read the same source-of-truth `SKILL.md` as the plugin path.
 
 ## Commands Run
 
@@ -95,6 +95,14 @@ Why this is better: `full-plus` now gives the largest consistent token savings w
 - Review tasks: off
 - Compress: manual only
 
+## Claude Code Parity
+
+- Verified against Anthropic Claude Code hooks docs: `SessionStart` and `UserPromptSubmit` stdout are injected as hidden context, which is the mechanism caveman relies on.
+- Standalone `hooks/install.sh` / `hooks/install.ps1` now copy `skills/caveman/SKILL.md` into `~/.claude/skills/caveman/SKILL.md`.
+- `hooks/caveman-activate.js` now reads that standalone skill copy when running outside the plugin bundle.
+- `hooks/caveman-mode-tracker.js` now emits `full-plus`-specific per-turn reinforcement aligned with the Codex tuning.
+- `tests/verify_repo.py` covers install, activation, `full-plus` tracking, statusline, and uninstall for the standalone Claude path.
+
 ## Contribution Note
 
-Per `CONTRIBUTING.md`, source of truth for prompt changes is `skills/caveman/SKILL.md`. Auto-synced mirror copies were intentionally left out of this commit.
+Per `CONTRIBUTING.md`, source of truth for prompt changes remains `skills/caveman/SKILL.md`. This branch also includes synced mirror copies and `caveman.skill` so the verification snapshot is self-consistent.
