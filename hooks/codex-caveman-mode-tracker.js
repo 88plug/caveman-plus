@@ -149,7 +149,7 @@ process.stdin.on('end', () => {
     const reminders = {
       lite: 'CAVEMAN lite active. Concise, direct, low-filler prose.',
       full: 'CAVEMAN full active. Terse. Drop filler/articles. Fragments OK. Code/commits/security normal.',
-      'full-plus': 'CAVEMAN full-plus active. English only. Newest ask only. One path. Smallest usable artifact. Conceptual asks: no workspace inspection unless asked to patch/run here. Code/commits/security normal.',
+      'full-plus': 'CAVEMAN full-plus active. English only. Newest ask only. One path. Explainers: plain mechanism prose. Bug-fix/debug: root cause + direct fix, no extra caveat unless needed. Summary/comment/note/PR/checklist: polished artifact matching requested format, plus one obvious benefit if useful. No workspace inspection unless asked to patch/run here. Code/commits/security normal.',
       ultra: 'CAVEMAN ultra active. Very terse. Abbrev when clear. Code/commits/security normal.',
       'mello-lite': 'CAVEMAN mello-lite active. Light same-language compression. Code/commits/security normal.',
       mello: 'CAVEMAN mello active. Strong same-language compression. Code/commits/security normal.',
