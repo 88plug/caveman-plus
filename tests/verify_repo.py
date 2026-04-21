@@ -203,6 +203,15 @@ def verify_mode_matrix_harness() -> None:
     section("Mode Matrix Harness")
 
     ensure(shutil.which("node") is not None, "node is required for mode matrix verification")
+    harness_text = (ROOT / "benchmarks/mode_matrix.py").read_text()
+    ensure(
+        'SCRIPT_DIR / ".tmp"' not in harness_text,
+        "mode_matrix.py should not write temp roots inside benchmarks/.tmp",
+    )
+    ensure(
+        "CAVEMAN_BENCH_TEMP_ROOT" in harness_text,
+        "mode_matrix.py missing temp-root override support",
+    )
     run(["python3", "benchmarks/mode_matrix.py", "--validate-only"], cwd=ROOT)
 
     print("Mode matrix benchmark config OK")

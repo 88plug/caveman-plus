@@ -84,4 +84,5 @@ Notes:
 - `mello` is the canonical runtime label for `mello-full`
 - Old `wenyan-*` names remain accepted as backward-compatible aliases
 - The harness creates isolated temp `HOME` and `CODEX_HOME` directories so `off` does not accidentally inherit global Caveman skills.
+- Temp benchmark roots default to your system temp dir, not the repo. Override with `CAVEMAN_BENCH_TEMP_ROOT=/abs/path/outside/repo`.
 - `commit` and `review` mode runs install only the skill under test into the temp home, then invoke it with `/caveman-commit` or `/caveman-review`.

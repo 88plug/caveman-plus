@@ -1,4 +1,5 @@
 benchmarks/results/*.json
+benchmarks/.tmp/
 __pycache__/
 *.pyc
 .venv/
