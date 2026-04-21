@@ -21,8 +21,10 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 
 $ClaudeDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $env:USERPROFILE ".claude" }
 $HooksDir = Join-Path $ClaudeDir "hooks"
+$SkillsDir = Join-Path $ClaudeDir "skills"
 $Settings = Join-Path $ClaudeDir "settings.json"
 $RepoUrl = "https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks"
+$SkillUrl = "https://raw.githubusercontent.com/JuliusBrussee/caveman/main/skills/caveman/SKILL.md"
 
 $HookFiles = @("package.json", "caveman-config.js", "caveman-activate.js", "caveman-mode-tracker.js", "caveman-statusline.sh", "caveman-statusline.ps1")
 
@@ -89,6 +91,7 @@ if ($Force -and (Test-Path (Join-Path $HooksDir "caveman-activate.js"))) {
 if (-not (Test-Path $HooksDir)) {
     New-Item -ItemType Directory -Path $HooksDir -Force | Out-Null
 }
+New-Item -ItemType Directory -Path (Join-Path $SkillsDir "caveman") -Force | Out-Null
 
 # 2. Copy or download hook files
 foreach ($hook in $HookFiles) {
@@ -102,6 +105,16 @@ foreach ($hook in $HookFiles) {
     }
     Write-Host "  Installed: $dest"
 }
+
+# 2b. Copy or download source-of-truth skill for standalone installs
+$skillDest = Join-Path (Join-Path $SkillsDir "caveman") "SKILL.md"
+$localSkill = if ($ScriptDir) { Join-Path (Split-Path $ScriptDir -Parent) "skills/caveman/SKILL.md" } else { $null }
+if ($localSkill -and (Test-Path $localSkill)) {
+    Copy-Item $localSkill $skillDest -Force
+} else {
+    Invoke-WebRequest -Uri $SkillUrl -OutFile $skillDest -UseBasicParsing
+}
+Write-Host "  Installed: $skillDest"
 
 # 3. Wire hooks + statusline into settings.json (idempotent)
 if (-not (Test-Path $Settings)) {
@@ -190,3 +203,4 @@ Write-Host "  - SessionStart hook: auto-loads caveman rules every session"
 Write-Host "  - Mode tracker hook: updates statusline badge when you switch modes"
 Write-Host "    (/caveman lite, /caveman ultra, /caveman-commit, etc.)"
 Write-Host "  - Statusline badge: shows [CAVEMAN] or [CAVEMAN:ULTRA] etc."
+Write-Host "  - ~/.claude/skills/caveman/SKILL.md for standalone source-of-truth rules"

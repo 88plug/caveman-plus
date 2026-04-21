@@ -27,8 +27,16 @@ try {
 $Mode = $Mode.ToLowerInvariant()
 $Mode = ($Mode -replace '[^a-z0-9-]', '')
 
-$Valid = @('off','lite','full','ultra','wenyan-lite','wenyan','wenyan-full','wenyan-ultra','commit','review','compress')
+$Valid = @('off','lite','full','full-plus','ultra','mello-lite','mello','mello-full','mello-ultra','wenyan-lite','wenyan','wenyan-full','wenyan-ultra','commit','review','compress')
 if (-not ($Valid -contains $Mode)) { exit 0 }
+
+switch ($Mode) {
+    'wenyan-lite' { $Mode = 'mello-lite' }
+    'wenyan' { $Mode = 'mello' }
+    'wenyan-full' { $Mode = 'mello' }
+    'wenyan-ultra' { $Mode = 'mello-ultra' }
+    'mello-full' { $Mode = 'mello' }
+}
 
 $Esc = [char]27
 if ([string]::IsNullOrEmpty($Mode) -or $Mode -eq "full") {

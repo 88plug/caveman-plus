@@ -2,7 +2,7 @@
 
 These hooks are **bundled with the caveman plugin** and activate automatically when the plugin is installed. No manual setup required.
 
-If you installed caveman standalone (without the plugin), you can use `bash hooks/install.sh` to wire them into your settings.json manually.
+If you installed caveman standalone (without the plugin), you can use `bash hooks/install.sh` to wire them into your settings.json manually. Standalone install also copies `~/.claude/skills/caveman/SKILL.md` so `SessionStart` reads the same source-of-truth prompt body as the plugin path.
 
 ## What's Included
 
@@ -11,18 +11,20 @@ If you installed caveman standalone (without the plugin), you can use `bash hook
 - Runs once when Claude Code starts
 - Writes `full` to `~/.claude/.caveman-active` (flag file)
 - Emits caveman rules as hidden SessionStart context
+- Reads rules from the plugin bundle or standalone `~/.claude/skills/caveman/SKILL.md`
 - Detects missing statusline config and emits setup nudge (Claude will offer to help)
 
 ### `caveman-mode-tracker.js` — UserPromptSubmit hook
 
 - Fires on every user prompt, checks for `/caveman` commands
 - Writes the active mode to the flag file when a caveman command is detected
-- Supports: `full`, `lite`, `ultra`, `wenyan`, `wenyan-lite`, `wenyan-ultra`, `commit`, `review`, `compress`
+- Supports: `full`, `full-plus`, `lite`, `ultra`, `mello`, `mello-lite`, `mello-ultra`, `commit`, `review`, `compress`
+  - `full-plus`: English-only artifact-first mode. Newest ask only, one default path, smallest usable artifact, no workspace inspection or blocker preamble unless file edits were requested.
 
 ### `caveman-statusline.sh` / `caveman-statusline.ps1` — Statusline badge script
 
 - Reads `~/.claude/.caveman-active` and outputs a colored badge
-- Shows `[CAVEMAN]`, `[CAVEMAN:ULTRA]`, `[CAVEMAN:WENYAN]`, etc.
+- Shows `[CAVEMAN]`, `[CAVEMAN:FULL-PLUS]`, `[CAVEMAN:ULTRA]`, `[CAVEMAN:MELLO]`, etc.
 
 ## Statusline Badge
 
@@ -32,7 +34,7 @@ The statusline badge shows which caveman mode is active directly in your Claude 
 
 If you already have a custom statusline, caveman does not overwrite it and Claude stays quiet. Add the badge snippet to your existing script instead.
 
-**Standalone users:** `install.sh` / `install.ps1` wires the statusline automatically if you do not already have a custom statusline. If you do, the installer leaves it alone and prints the merge note.
+**Standalone users:** `install.sh` / `install.ps1` wires the statusline automatically if you do not already have a custom statusline. If you do, the installer leaves it alone and prints the merge note. It also copies `~/.claude/skills/caveman/SKILL.md` so standalone activation uses the same source-of-truth rules as plugin installs.
 
 **Manual setup:** If you need to configure it yourself, add one of these to `~/.claude/settings.json`:
 
@@ -75,7 +77,7 @@ fi
 Badge examples:
 - `/caveman` → `[CAVEMAN]`
 - `/caveman ultra` → `[CAVEMAN:ULTRA]`
-- `/caveman wenyan` → `[CAVEMAN:WENYAN]`
+- `/caveman mello` → `[CAVEMAN:MELLO]`
 - `/caveman-commit` → `[CAVEMAN:COMMIT]`
 - `/caveman-review` → `[CAVEMAN:REVIEW]`
 
@@ -105,3 +107,4 @@ Or manually:
 1. Remove `~/.claude/hooks/caveman-activate.js`, `~/.claude/hooks/caveman-mode-tracker.js`, and the matching statusline script (`caveman-statusline.sh` on macOS/Linux or `caveman-statusline.ps1` on Windows)
 2. Remove the SessionStart, UserPromptSubmit, and statusLine entries from `~/.claude/settings.json`
 3. Delete `~/.claude/.caveman-active`
+4. Delete `~/.claude/skills/caveman/SKILL.md`

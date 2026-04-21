@@ -34,8 +34,10 @@ fi
 
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 HOOKS_DIR="$CLAUDE_DIR/hooks"
+SKILLS_DIR="$CLAUDE_DIR/skills"
 SETTINGS="$CLAUDE_DIR/settings.json"
 REPO_URL="https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks"
+SKILL_URL="https://raw.githubusercontent.com/JuliusBrussee/caveman/main/skills/caveman/SKILL.md"
 
 HOOK_FILES=("package.json" "caveman-config.js" "caveman-activate.js" "caveman-mode-tracker.js" "caveman-statusline.sh")
 
@@ -103,6 +105,7 @@ fi
 
 # 1. Ensure hooks dir exists
 mkdir -p "$HOOKS_DIR"
+mkdir -p "$SKILLS_DIR/caveman"
 
 # 2. Copy or download hook files
 for hook in "${HOOK_FILES[@]}"; do
@@ -113,6 +116,15 @@ for hook in "${HOOK_FILES[@]}"; do
   fi
   echo "  Installed: $HOOKS_DIR/$hook"
 done
+
+# 2b. Copy or download source-of-truth skill so standalone SessionStart reads
+# the same prompt body as the plugin install.
+if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/../skills/caveman/SKILL.md" ]; then
+  cp "$SCRIPT_DIR/../skills/caveman/SKILL.md" "$SKILLS_DIR/caveman/SKILL.md"
+else
+  curl -fsSL "$SKILL_URL" -o "$SKILLS_DIR/caveman/SKILL.md"
+fi
+echo "  Installed: $SKILLS_DIR/caveman/SKILL.md"
 
 # Make statusline script executable
 chmod +x "$HOOKS_DIR/caveman-statusline.sh"
@@ -197,3 +209,4 @@ echo "  - SessionStart hook: auto-loads caveman rules every session"
 echo "  - Mode tracker hook: updates statusline badge when you switch modes"
 echo "    (/caveman lite, /caveman ultra, /caveman-commit, etc.)"
 echo "  - Statusline badge: shows [CAVEMAN] or [CAVEMAN:ULTRA] etc."
+echo "  - ~/.claude/skills/caveman/SKILL.md for standalone source-of-truth rules"

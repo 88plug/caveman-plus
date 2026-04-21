@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { getDefaultMode, safeWriteFlag, readFlag } = require('./caveman-config');
+const { getDefaultMode, normalizeMode, safeWriteFlag, readFlag } = require('./caveman-config');
 
 const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
 const flagPath = path.join(claudeDir, '.caveman-active');
@@ -23,7 +23,7 @@ process.stdin.on('end', () => {
     if (/\b(activate|enable|turn on|start|talk like)\b.*\bcaveman\b/i.test(prompt) ||
         /\bcaveman\b.*\b(mode|activate|enable|turn on|start)\b/i.test(prompt)) {
       if (!/\b(stop|disable|turn off|deactivate)\b/i.test(prompt)) {
-        const mode = getDefaultMode();
+        const mode = normalizeMode(getDefaultMode());
         if (mode !== 'off') {
           safeWriteFlag(flagPath, mode);
         }
@@ -34,7 +34,7 @@ process.stdin.on('end', () => {
     if (prompt.startsWith('/caveman')) {
       const parts = prompt.split(/\s+/);
       const cmd = parts[0]; // /caveman, /caveman-commit, /caveman-review, etc.
-      const arg = parts[1] || '';
+      const arg = normalizeMode(parts[1] || '');
 
       let mode = null;
 
@@ -46,11 +46,13 @@ process.stdin.on('end', () => {
         mode = 'compress';
       } else if (cmd === '/caveman' || cmd === '/caveman:caveman') {
         if (arg === 'lite') mode = 'lite';
+        else if (arg === 'full') mode = 'full';
+        else if (arg === 'full-plus') mode = 'full-plus';
         else if (arg === 'ultra') mode = 'ultra';
-        else if (arg === 'wenyan-lite') mode = 'wenyan-lite';
-        else if (arg === 'wenyan' || arg === 'wenyan-full') mode = 'wenyan';
-        else if (arg === 'wenyan-ultra') mode = 'wenyan-ultra';
-        else mode = getDefaultMode();
+        else if (arg === 'mello-lite') mode = 'mello-lite';
+        else if (arg === 'mello') mode = 'mello';
+        else if (arg === 'mello-ultra') mode = 'mello-ultra';
+        else mode = normalizeMode(getDefaultMode());
       }
 
       if (mode && mode !== 'off') {
@@ -81,12 +83,21 @@ process.stdin.on('end', () => {
     const INDEPENDENT_MODES = new Set(['commit', 'review', 'compress']);
     const activeMode = readFlag(flagPath);
     if (activeMode && !INDEPENDENT_MODES.has(activeMode)) {
+      const reminders = {
+        lite: 'CAVEMAN MODE ACTIVE (lite). Concise, direct, low-filler prose.',
+        full: 'CAVEMAN MODE ACTIVE (full). Drop articles/filler/hedging. Fragments OK. Code/commits/security: write normal.',
+        'full-plus': 'CAVEMAN MODE ACTIVE (full-plus). English only. Newest ask only. One path. Explainers: plain mechanism prose. Bug-fix/debug: root cause + direct fix. Summary/comment/note/PR/checklist: polished artifact matching requested format. No workspace inspection unless asked to patch/run here.',
+        ultra: 'CAVEMAN MODE ACTIVE (ultra). Very terse. Abbrev when clear. Code/commits/security: write normal.',
+        'mello-lite': 'CAVEMAN MODE ACTIVE (mello-lite). Light same-language compression. Code/commits/security: write normal.',
+        mello: 'CAVEMAN MODE ACTIVE (mello). Strong same-language compression. Code/commits/security: write normal.',
+        'mello-ultra': 'CAVEMAN MODE ACTIVE (mello-ultra). Extreme same-language compression. Code/commits/security: write normal.'
+      };
+      const additionalContext = reminders[activeMode] ||
+        ('CAVEMAN MODE ACTIVE (' + activeMode + '). Drop articles/filler/pleasantries/hedging. Fragments OK. Code/commits/security: write normal.');
       process.stdout.write(JSON.stringify({
         hookSpecificOutput: {
           hookEventName: "UserPromptSubmit",
-          additionalContext: "CAVEMAN MODE ACTIVE (" + activeMode + "). " +
-            "Drop articles/filler/pleasantries/hedging. Fragments OK. " +
-            "Code/commits/security: write normal."
+          additionalContext
         }
       }));
     }

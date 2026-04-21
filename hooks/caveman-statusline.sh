@@ -23,8 +23,15 @@ MODE=$(printf '%s' "$MODE" | tr -cd 'a-z0-9-')
 
 # Whitelist. Anything else → render nothing rather than echo attacker bytes.
 case "$MODE" in
-  off|lite|full|ultra|wenyan-lite|wenyan|wenyan-full|wenyan-ultra|commit|review|compress) ;;
+  off|lite|full|full-plus|ultra|mello-lite|mello|mello-full|mello-ultra|wenyan-lite|wenyan|wenyan-full|wenyan-ultra|commit|review|compress) ;;
   *) exit 0 ;;
+esac
+
+case "$MODE" in
+  wenyan-lite) MODE="mello-lite" ;;
+  wenyan|wenyan-full) MODE="mello" ;;
+  wenyan-ultra) MODE="mello-ultra" ;;
+  mello-full) MODE="mello" ;;
 esac
 
 if [ -z "$MODE" ] || [ "$MODE" = "full" ]; then
