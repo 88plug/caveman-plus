@@ -22,7 +22,6 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_DIR = SCRIPT_DIR.parent
 RESULTS_DIR = SCRIPT_DIR / "results"
 EXPERIMENTS_PATH = SCRIPT_DIR / "mode_matrix_experiments.json"
-TEMP_ROOT = SCRIPT_DIR / ".tmp"
 SOURCE_CODEX_HOME = Path(
     os.environ.get("CAVEMAN_BENCH_SOURCE_CODEX_HOME", str(Path.home() / ".codex"))
 )
@@ -64,6 +63,24 @@ JUDGE_SCHEMA = {
     "required": ["overall", "correctness", "coverage", "format", "major_issues"],
     "additionalProperties": False,
 }
+
+
+def get_temp_root() -> Path:
+    raw = os.environ.get(
+        "CAVEMAN_BENCH_TEMP_ROOT",
+        str(Path(tempfile.gettempdir()) / "caveman-bench"),
+    )
+    root = Path(raw).expanduser().resolve()
+    try:
+        root.relative_to(REPO_DIR.resolve())
+    except ValueError:
+        pass
+    else:
+        raise RuntimeError(
+            f"CAVEMAN_BENCH_TEMP_ROOT must stay outside the repo: {root}"
+        )
+    root.mkdir(parents=True, exist_ok=True)
+    return root
 
 
 def sha256_file(path: Path) -> str:
@@ -141,6 +158,7 @@ def validate_experiments(data: dict[str, Any]) -> None:
 def ensure_runtime(validate_only: bool = False) -> None:
     if shutil.which("node") is None:
         raise RuntimeError("node is required to build Codex hook contexts")
+    get_temp_root()
     if validate_only:
         return
     if shutil.which("codex") is None:
@@ -290,8 +308,10 @@ def run_codex_exec(
     default_mode: str | None = None,
     output_schema: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    TEMP_ROOT.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="mode-matrix-", dir=TEMP_ROOT) as tmp:
+    with tempfile.TemporaryDirectory(
+        prefix="mode-matrix-",
+        dir=get_temp_root(),
+    ) as tmp:
         root = Path(tmp)
         home_dir = root / "home"
         codex_home = root / "codex"
@@ -300,7 +320,9 @@ def run_codex_exec(
         codex_home.mkdir(parents=True)
         workdir.mkdir(parents=True)
 
-        shutil.copy2(SOURCE_AUTH_PATH, codex_home / "auth.json")
+        auth_path = codex_home / "auth.json"
+        shutil.copy2(SOURCE_AUTH_PATH, auth_path)
+        os.chmod(auth_path, 0o600)
         write_config(codex_home, hooks_enabled=hooks_enabled)
         if hooks_enabled:
             install_hooks(codex_home)
@@ -473,7 +495,10 @@ def import_validate_module():
 
 def validate_pair(original_text: str, compressed_text: str) -> dict[str, Any]:
     validate = import_validate_module()
-    with tempfile.TemporaryDirectory(prefix="compress-validate-", dir=TEMP_ROOT) as tmp:
+    with tempfile.TemporaryDirectory(
+        prefix="compress-validate-",
+        dir=get_temp_root(),
+    ) as tmp:
         root = Path(tmp)
         original = root / "original.md"
         compressed = root / "compressed.md"

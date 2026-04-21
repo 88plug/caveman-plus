@@ -203,6 +203,15 @@ def verify_mode_matrix_harness() -> None:
     section("Mode Matrix Harness")
 
     ensure(shutil.which("node") is not None, "node is required for mode matrix verification")
+    harness_text = (ROOT / "benchmarks/mode_matrix.py").read_text()
+    ensure(
+        'SCRIPT_DIR / ".tmp"' not in harness_text,
+        "mode_matrix.py should not write temp roots inside benchmarks/.tmp",
+    )
+    ensure(
+        "CAVEMAN_BENCH_TEMP_ROOT" in harness_text,
+        "mode_matrix.py missing temp-root override support",
+    )
     run(["python3", "benchmarks/mode_matrix.py", "--validate-only"], cwd=ROOT)
 
     print("Mode matrix benchmark config OK")
@@ -233,6 +242,7 @@ def verify_hook_install_flow() -> None:
         ensure(settings["statusLine"]["command"] == "bash /tmp/existing-statusline.sh", "install.sh clobbered existing statusLine")
         ensure("SessionStart" in hooks, "SessionStart hook missing after install")
         ensure("UserPromptSubmit" in hooks, "UserPromptSubmit hook missing after install")
+        ensure((claude_dir / "skills" / "caveman" / "SKILL.md").exists(), "install.sh missing standalone caveman skill copy")
 
         activate = run(
             ["node", "hooks/caveman-activate.js"],
@@ -290,6 +300,18 @@ def verify_hook_install_flow() -> None:
         ensure("CAVEMAN MODE ACTIVE" in ultra_prompt.stdout, "mode tracker should emit reminder context")
         ensure((claude_dir / ".caveman-active").read_text() == "ultra", "mode tracker did not record ultra")
 
+        full_plus_prompt = subprocess.run(
+            ["node", "hooks/caveman-mode-tracker.js"],
+            cwd=ROOT,
+            env={**os.environ, "HOME": str(home)},
+            text=True,
+            input='{"prompt":"/caveman full-plus"}',
+            capture_output=True,
+            check=True,
+        )
+        ensure("plain mechanism prose" in full_plus_prompt.stdout, "full-plus Claude reminder should mirror Codex semantics")
+        ensure((claude_dir / ".caveman-active").read_text() == "full-plus", "mode tracker did not record full-plus")
+
         subprocess.run(
             ["node", "hooks/caveman-mode-tracker.js"],
             cwd=ROOT,
@@ -315,6 +337,7 @@ def verify_hook_install_flow() -> None:
         settings_after = read_json(claude_dir / "settings.json")
         ensure(settings_after == existing_settings, "uninstall.sh did not restore non-caveman settings")
         ensure(not (claude_dir / ".caveman-active").exists(), "uninstall.sh should remove flag file")
+        ensure(not (claude_dir / "skills" / "caveman" / "SKILL.md").exists(), "uninstall.sh should remove standalone caveman skill copy")
 
     with tempfile.TemporaryDirectory(prefix="caveman-verify-fresh-") as temp_root:
         home = Path(temp_root) / "home"

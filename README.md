@@ -191,6 +191,8 @@ Or from a local clone: `bash hooks/install.sh` / `powershell -File hooks\install
 
 Uninstall: `bash hooks/uninstall.sh` or `powershell -File hooks\uninstall.ps1`
 
+Standalone install also copies `~/.claude/skills/caveman/SKILL.md`, so Claude's `SessionStart` hook reads the same source-of-truth rules as plugin installs instead of a weaker fallback summary.
+
 **Statusline badge:** Shows `[CAVEMAN]`, `[CAVEMAN:ULTRA]`, etc. in your Claude Code status bar.
 
 - **Plugin install:** If you do not already have a custom `statusLine`, Claude should offer to configure it on first session

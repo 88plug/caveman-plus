@@ -96,7 +96,8 @@ Exports:
 Runs once per Claude Code session start. Three things:
 1. Writes the active mode to `$CLAUDE_CONFIG_DIR/.caveman-active` via `safeWriteFlag` (creates if missing)
 2. Emits caveman ruleset as hidden stdout — Claude Code injects SessionStart hook stdout as system context, invisible to user
-3. Checks `settings.json` for statusline config; if missing, appends nudge to offer setup on first interaction
+3. Reads `SKILL.md` from the plugin bundle or standalone `$CLAUDE_CONFIG_DIR/skills/caveman/SKILL.md`
+4. Checks `settings.json` for statusline config; if missing, appends nudge to offer setup on first interaction
 
 Silent-fails on all filesystem errors — never blocks session start.
 
@@ -107,10 +108,13 @@ Reads JSON from stdin. Three responsibilities:
 **1. Slash-command activation.** If prompt starts with `/caveman`, writes mode to flag file via `safeWriteFlag`:
 - `/caveman` → configured default (see `caveman-config.js`, defaults to `full`)
 - `/caveman lite` → `lite`
+- `/caveman full` → `full`
+- `/caveman full-plus` → `full-plus`
 - `/caveman ultra` → `ultra`
-- `/caveman wenyan` or `/caveman wenyan-full` → `wenyan`
-- `/caveman wenyan-lite` → `wenyan-lite`
-- `/caveman wenyan-ultra` → `wenyan-ultra`
+- `/caveman mello` or `/caveman mello-full` → `mello`
+- `/caveman mello-lite` → `mello-lite`
+- `/caveman mello-ultra` → `mello-ultra`
+- Wenyan names remain backward-compatible aliases and normalize to the matching `mello*` mode
 - `/caveman-commit` → `commit`
 - `/caveman-review` → `review`
 - `/caveman-compress` → `compress`
@@ -131,7 +135,7 @@ Configured in `settings.json` under `statusLine.command`. PowerShell counterpart
 
 **Plugin install** — hooks wired automatically by plugin system.
 
-**Standalone install** — `hooks/install.sh` (macOS/Linux) or `hooks/install.ps1` (Windows) copies hook files into `~/.claude/hooks/` and patches `~/.claude/settings.json` to register SessionStart and UserPromptSubmit hooks plus statusline.
+**Standalone install** — `hooks/install.sh` (macOS/Linux) or `hooks/install.ps1` (Windows) copies hook files into `~/.claude/hooks/`, copies `skills/caveman/SKILL.md` into `~/.claude/skills/caveman/SKILL.md`, and patches `~/.claude/settings.json` to register SessionStart and UserPromptSubmit hooks plus statusline.
 
 **Uninstall** — `hooks/uninstall.sh` / `hooks/uninstall.ps1` removes hook files and patches settings.json.
 
@@ -143,7 +147,7 @@ Skills = Markdown files with YAML frontmatter consumed by Claude Code's skill/pl
 
 ### Intensity levels
 
-Defined in `skills/caveman/SKILL.md`. Six levels: `lite`, `full` (default), `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`. Persists until changed or session ends.
+Defined in `skills/caveman/SKILL.md`. Seven general levels: `lite`, `full` (default), `full-plus`, `ultra`, `mello-lite`, `mello`, `mello-ultra`. Wenyan names remain backward-compatible aliases. Persists until changed or session ends.
 
 ### Auto-clarity rule
 

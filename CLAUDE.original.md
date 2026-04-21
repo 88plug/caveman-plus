@@ -94,10 +94,13 @@ Silent-fails on all filesystem errors — never blocks session start.
 Reads JSON from stdin (Claude Code passes prompt data as JSON on this hook event). Checks if the user prompt starts with `/caveman`. If yes, writes the detected mode to the flag file:
 - `/caveman` → `full`
 - `/caveman lite` → `lite`
+- `/caveman full` → `full`
+- `/caveman full-plus` → `full-plus`
 - `/caveman ultra` → `ultra`
-- `/caveman wenyan` or `/caveman wenyan-full` → `wenyan`
-- `/caveman wenyan-lite` → `wenyan-lite`
-- `/caveman wenyan-ultra` → `wenyan-ultra`
+- `/caveman mello` or `/caveman mello-full` → `mello`
+- `/caveman mello-lite` → `mello-lite`
+- `/caveman mello-ultra` → `mello-ultra`
+- Wenyan names remain backward-compatible aliases and normalize to the matching `mello*` mode
 - `/caveman-commit` → `commit`
 - `/caveman-review` → `review`
 - `/caveman-compress` → `compress`
@@ -116,7 +119,7 @@ Configured in `~/.claude/settings.json` under `statusLine.command`.
 
 **Plugin install** — hooks are wired automatically by the plugin system.
 
-**Standalone install** — `hooks/install.sh` (macOS/Linux) or `hooks/install.ps1` (Windows) copies the three hook files into `~/.claude/hooks/` and patches `~/.claude/settings.json` to register SessionStart and UserPromptSubmit hooks plus the statusline.
+**Standalone install** — `hooks/install.sh` (macOS/Linux) or `hooks/install.ps1` (Windows) copies hook files into `~/.claude/hooks/`, copies `skills/caveman/SKILL.md` into `~/.claude/skills/caveman/SKILL.md`, and patches `~/.claude/settings.json` to register SessionStart and UserPromptSubmit hooks plus the statusline.
 
 **Uninstall** — `hooks/uninstall.sh` / `hooks/uninstall.ps1` removes hook files and patches settings.json.
 
@@ -128,7 +131,7 @@ Skills are Markdown files with YAML frontmatter consumed by Claude Code's skill/
 
 ### Intensity levels
 
-Defined in `skills/caveman/SKILL.md`. Six levels: `lite`, `full` (default), `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`. Level persists until changed or session ends.
+Defined in `skills/caveman/SKILL.md`. Seven general levels: `lite`, `full` (default), `full-plus`, `ultra`, `mello-lite`, `mello`, `mello-ultra`. Wenyan names remain backward-compatible aliases. Level persists until changed or session ends.
 
 ### Auto-clarity rule
 

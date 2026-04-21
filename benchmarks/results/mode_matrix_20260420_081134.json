@@ -1,0 +1,306 @@
+{
+  "metadata": {
+    "script_version": "2.0.0",
+    "generated_at": "2026-04-20T08:07:38.390126+00:00",
+    "backend": "codex",
+    "model": "gpt-5.4",
+    "judge_model": "gpt-5.4-mini",
+    "skip_judge": false,
+    "experiments_sha256": "f290bf3a1ca3f519e02efd0e47371895144614b11306d5b582a637a95c961d9b",
+    "activate_hook_sha256": "093b406d02b5659c19bff2c6b02bbefbca2529bbc13e39341d041b6886f0f9e3",
+    "tracker_hook_sha256": "c8776b4f8f3dc2abb533bc9919ffcc1c877024ebd3ac08254dcc614bbc19999a"
+  },
+  "families": {
+    "commit": {
+      "family": "commit",
+      "modes": [
+        "off",
+        "commit"
+      ],
+      "summary_rows": [
+        {
+          "mode": "off",
+          "experiments": 5,
+          "mean_savings_vs_off": 0.0,
+          "median_savings_vs_off": 0.0,
+          "mean_quality_score": 4.2,
+          "mean_quality_loss_vs_off": 0.0,
+          "mean_total_savings_vs_off": 0.0,
+          "median_total_savings_vs_off": 0.0
+        },
+        {
+          "mode": "commit",
+          "experiments": 5,
+          "mean_savings_vs_off": -0.7409464177306837,
+          "median_savings_vs_off": 0.4646074646074646,
+          "mean_quality_score": 4.4,
+          "mean_quality_loss_vs_off": -0.2,
+          "mean_total_savings_vs_off": 0.2494944157319173,
+          "median_total_savings_vs_off": 0.5459396833198751
+        }
+      ],
+      "rows": [
+        {
+          "family": "commit",
+          "mode": "off",
+          "experiment_id": "jwt-expiry-units",
+          "input_tokens": 74584,
+          "cached_input_tokens": 61440,
+          "output_tokens": 1128,
+          "total_tokens": 75712,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "fix(auth): compare JWT exp against current time in seconds\n\nConvert `Date.now()` to seconds in the Express auth middleware so expired JWTs are rejected correctly, and add a regression test for the staging login flow.",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 12116,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 211,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "commit",
+          "mode": "commit",
+          "experiment_id": "jwt-expiry-units",
+          "input_tokens": 23867,
+          "cached_input_tokens": 21504,
+          "output_tokens": 428,
+          "total_tokens": 24295,
+          "output_savings_vs_off": 0.6205673758865249,
+          "total_savings_vs_off": 0.679112954353339,
+          "text": "```text\nfix(auth): reject expired JWTs\n\nJWT exp is in seconds; comparing it to Date.now() let\nexpired tokens pass auth and broke staging login flows.\n\nAdd a regression test to keep the units aligned.\n```",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "The subject line is a bit generic; it does not explicitly mention the JWT expiry unit mismatch, though the body does."
+            ],
+            "judge_input_tokens": 12161,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 200,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":5,\"major_issues\":[\"The subject line is a bit generic; it does not explicitly mention the JWT expiry unit mismatch, though the body does.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 1
+        },
+        {
+          "family": "commit",
+          "mode": "off",
+          "experiment_id": "docker-multistage",
+          "input_tokens": 53454,
+          "cached_input_tokens": 45696,
+          "output_tokens": 719,
+          "total_tokens": 54173,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "build: use multi-stage Docker build for slimmer production images",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 12067,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 266,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "commit",
+          "mode": "commit",
+          "experiment_id": "docker-multistage",
+          "input_tokens": 23944,
+          "cached_input_tokens": 21504,
+          "output_tokens": 485,
+          "total_tokens": 24429,
+          "output_savings_vs_off": 0.325452016689847,
+          "total_savings_vs_off": 0.5490558027061452,
+          "text": "build(docker): use multi-stage runtime image\n\nKeep dev dependencies in the builder stage only to shrink\nthe production image and speed up deploys.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 4,
+            "major_issues": [],
+            "judge_input_tokens": 11244,
+            "judge_cached_input_tokens": 9088,
+            "judge_output_tokens": 243,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":4,\"major_issues\":[]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 1
+        },
+        {
+          "family": "commit",
+          "mode": "off",
+          "experiment_id": "error-boundary-retry",
+          "input_tokens": 56067,
+          "cached_input_tokens": 49280,
+          "output_tokens": 899,
+          "total_tokens": 56966,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "Add reusable widget error boundary with retry fallback\n\nProvide a shared React error boundary for dashboard widgets with a safer crash path. Show a retry action in the fallback UI and log captured error details for debugging.",
+          "judge": {
+            "overall": 2,
+            "correctness": 2,
+            "coverage": 3,
+            "format": 2,
+            "major_issues": [
+              "Missing Conventional Commits format (`feat:`, `fix:`, etc.), which is required by the rubric.",
+              "The subject is acceptable and the body mentions the error boundary, retry fallback, and debugging benefit, but the required commit style is not followed."
+            ],
+            "judge_input_tokens": 12077,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 343,
+            "raw": "{\"overall\":2,\"correctness\":2,\"coverage\":3,\"format\":2,\"major_issues\":[\"Missing Conventional Commits format (`feat:`, `fix:`, etc.), which is required by the rubric.\",\"The subject is acceptable and the body mentions the error boundary, retry fallback, and debugging benefit, but the required commit style is not followed.\"]}"
+          },
+          "quality_score": 2,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "commit",
+          "mode": "commit",
+          "experiment_id": "error-boundary-retry",
+          "input_tokens": 25541,
+          "cached_input_tokens": 19968,
+          "output_tokens": 325,
+          "total_tokens": 25866,
+          "output_savings_vs_off": 0.6384872080088988,
+          "total_savings_vs_off": 0.5459396833198751,
+          "text": "feat(ui): add widget error boundary\n\nDashboard widgets need a safe crash path so a render failure\nshows recovery UI instead of taking down the page.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "Does not mention the retry fallback UI or the captured-error logging, so it leaves out two important parts of the change.",
+              "The benefit is stated, but only at a high level; it does not clearly reflect the reusable shared boundary behavior."
+            ],
+            "judge_input_tokens": 12112,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 177,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":5,\"major_issues\":[\"Does not mention the retry fallback UI or the captured-error logging, so it leaves out two important parts of the change.\",\"The benefit is stated, but only at a high level; it does not clearly reflect the reusable shared boundary behavior.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": -2
+        },
+        {
+          "family": "commit",
+          "mode": "off",
+          "experiment_id": "symlink-hardening",
+          "input_tokens": 55459,
+          "cached_input_tokens": 48768,
+          "output_tokens": 777,
+          "total_tokens": 56236,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "security: harden caveman mode flag file handling\n\nRefuse symlink targets when reading or writing the mode flag file.\nAdd size caps and whitelist checks to prevent arbitrary file contents\nfrom leaking into prompts.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 5,
+            "format": 4,
+            "major_issues": [
+              "Uses `security:` instead of a standard Conventional Commit type like `fix:` or `chore:`."
+            ],
+            "judge_input_tokens": 11234,
+            "judge_cached_input_tokens": 2432,
+            "judge_output_tokens": 252,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":5,\"format\":4,\"major_issues\":[\"Uses `security:` instead of a standard Conventional Commit type like `fix:` or `chore:`.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "commit",
+          "mode": "commit",
+          "experiment_id": "symlink-hardening",
+          "input_tokens": 25672,
+          "cached_input_tokens": 23296,
+          "output_tokens": 416,
+          "total_tokens": 26088,
+          "output_savings_vs_off": 0.4646074646074646,
+          "total_savings_vs_off": 0.5360978732484529,
+          "text": "fix(security): harden mode flag file access\n\n- Refuse symlink targets for mode flag reads and writes\n- Cap file size and require whitelisted paths before loading\n  file contents into prompts\n- Prevent prompt leakage via arbitrary file reads",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 11297,
+            "judge_cached_input_tokens": 9088,
+            "judge_output_tokens": 323,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": -1
+        },
+        {
+          "family": "commit",
+          "mode": "off",
+          "experiment_id": "websocket-refresh-race",
+          "input_tokens": 12209,
+          "cached_input_tokens": 10752,
+          "output_tokens": 65,
+          "total_tokens": 12274,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "fix: serialize JWT refresh before websocket reconnect after network drops\n\nPrevent the client from reconnecting with an expired token by enforcing refresh completion before reconnect. This fixes a race that was blocking an enterprise demo.",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 11238,
+            "judge_cached_input_tokens": 2432,
+            "judge_output_tokens": 241,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "commit",
+          "mode": "commit",
+          "experiment_id": "websocket-refresh-race",
+          "input_tokens": 24879,
+          "cached_input_tokens": 13312,
+          "output_tokens": 439,
+          "total_tokens": 25318,
+          "output_savings_vs_off": -5.753846153846154,
+          "total_savings_vs_off": -1.0627342349682256,
+          "text": "fix(ws): serialize refresh before reconnect\n\nPrevent reconnect from racing JWT refresh after network\ninterruptions, which could reuse an expired token.\n\nThis was blocking an enterprise demo.",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 12135,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 302,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": 0
+        }
+      ]
+    }
+  }
+}

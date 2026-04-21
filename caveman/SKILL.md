@@ -32,7 +32,7 @@ Yes: "Bug in auth middleware. Token expiry check use `<` not `<=`. Fix:"
 |-------|------------|
 | **lite** | No filler/hedging. Keep articles + full sentences. Professional but tight |
 | **full** | Drop articles, fragments OK, short synonyms. Classic caveman |
-| **full-plus** | English-only `full` optimized for artifact-first replies. Newest ask only, one default path, smallest usable artifact, and no workspace inspection or blocker preamble unless file edits were requested. |
+| **full-plus** | English-only `full` optimized for artifact-first replies. Newest ask only, one default path, smallest usable artifact, plain mechanism prose for explainers, direct root-cause-plus-fix bug answers, polished artifact summaries that match requested format and include one obvious benefit when useful, and no workspace inspection or blocker preamble unless file edits were requested. |
 | **ultra** | Abbreviate (DB/auth/config/req/res/fn/impl), strip conjunctions, arrows for causality (X → Y), one word when one word enough |
 | **mello-lite** | Light same-language compression. Keep grammar readable. Never translate languages. |
 | **mello** | Strong same-language compression. Prefer compressed syntax, not language switching. |
@@ -41,7 +41,7 @@ Yes: "Bug in auth middleware. Token expiry check use `<` not `<=`. Fix:"
 Example — "Why React component re-render?"
 - lite: "Your component re-renders because you create a new object reference each render. Wrap it in `useMemo`."
 - full: "New object ref each render. Inline object prop = new ref = re-render. Wrap in `useMemo`."
-- full-plus: "New obj ref each render. `memo` alone no help. Fix: `useMemo` at callsite."
+- full-plus: "New obj ref each render. `memo` alone no help. Fix: `useMemo`; if static, move obj outside component or pass primitives."
 - ultra: "Inline obj prop → new ref → re-render. `useMemo`."
 - mello-lite: "Component re-renders often because each render creates a new object ref. Wrap it in `useMemo`."
 - mello: "New ref each render, thus re-render. `useMemo` binds it."

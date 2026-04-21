@@ -1,0 +1,318 @@
+{
+  "metadata": {
+    "script_version": "2.0.0",
+    "generated_at": "2026-04-20T08:11:41.851364+00:00",
+    "backend": "codex",
+    "model": "gpt-5.4",
+    "judge_model": "gpt-5.4-mini",
+    "skip_judge": false,
+    "experiments_sha256": "f290bf3a1ca3f519e02efd0e47371895144614b11306d5b582a637a95c961d9b",
+    "activate_hook_sha256": "093b406d02b5659c19bff2c6b02bbefbca2529bbc13e39341d041b6886f0f9e3",
+    "tracker_hook_sha256": "c8776b4f8f3dc2abb533bc9919ffcc1c877024ebd3ac08254dcc614bbc19999a"
+  },
+  "families": {
+    "review": {
+      "family": "review",
+      "modes": [
+        "off",
+        "review"
+      ],
+      "summary_rows": [
+        {
+          "mode": "off",
+          "experiments": 5,
+          "mean_savings_vs_off": 0.0,
+          "median_savings_vs_off": 0.0,
+          "mean_quality_score": 4.4,
+          "mean_quality_loss_vs_off": 0.0,
+          "mean_total_savings_vs_off": 0.0,
+          "median_total_savings_vs_off": 0.0
+        },
+        {
+          "mode": "review",
+          "experiments": 5,
+          "mean_savings_vs_off": 0.3967269387867729,
+          "median_savings_vs_off": 0.5204819277108435,
+          "mean_quality_score": 4.0,
+          "mean_quality_loss_vs_off": 0.4,
+          "mean_total_savings_vs_off": 0.1370897547192487,
+          "median_total_savings_vs_off": 0.5095280364123969
+        }
+      ],
+      "rows": [
+        {
+          "family": "review",
+          "mode": "off",
+          "experiment_id": "sql-injection",
+          "input_tokens": 51176,
+          "cached_input_tokens": 49024,
+          "output_tokens": 830,
+          "total_tokens": 52006,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "- `api/users.js:13` constructs SQL by interpolating `req.params.id` directly into the query string. This is SQL injection: a request like `/api/users/1 OR 1=1` can alter the query, and other payloads can escalate further depending on the driver/database. Use a parameterized query instead, e.g. `SELECT * FROM users WHERE id = $1` with `[req.params.id]`.\n\nI couldn\u2019t inspect the repository-specific review skills from `AGENTS.md` because the referenced files were not present in the provided workspace, so this review is based on the diff you included.",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 12193,
+            "judge_cached_input_tokens": 2432,
+            "judge_output_tokens": 172,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "review",
+          "experiment_id": "sql-injection",
+          "input_tokens": 24716,
+          "cached_input_tokens": 17408,
+          "output_tokens": 398,
+          "total_tokens": 25114,
+          "output_savings_vs_off": 0.5204819277108435,
+          "total_savings_vs_off": 0.5170941814406029,
+          "text": "api/users.js:L13: \ud83d\udd34 bug: SQL injection. `req.params.id` is interpolated directly into the query string, so `/api/users/1 OR 1=1` or similar input can change the SQL. Use a parameterized query instead, e.g. `SELECT * FROM users WHERE id = $1` with `[req.params.id]`.\n\napi/users.js:L15: \ud83d\udfe1 risk: missing not-found handling. When no row matches, this returns `200` with `null` instead of a `404`. Add a guard on `user.rows[0]` and return `res.status(404)` when absent.",
+          "judge": {
+            "overall": 4,
+            "correctness": 5,
+            "coverage": 4,
+            "format": 4,
+            "major_issues": [
+              "Includes an additional not-found handling note that is not part of the required SQL-injection finding, though the primary injection issue is correctly identified and prioritized."
+            ],
+            "judge_input_tokens": 12338,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 492,
+            "raw": "{\"overall\":4,\"correctness\":5,\"coverage\":4,\"format\":4,\"major_issues\":[\"Includes an additional not-found handling note that is not part of the required SQL-injection finding, though the primary injection issue is correctly identified and prioritized.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 1
+        },
+        {
+          "family": "review",
+          "mode": "off",
+          "experiment_id": "jwt-without-verify",
+          "input_tokens": 57456,
+          "cached_input_tokens": 49408,
+          "output_tokens": 1213,
+          "total_tokens": 58669,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "- High: [auth/session.ts:29] `getUser` trusts the JWT payload without verifying the token signature. Any client can forge a token like `{\"sub\":\"attacker\",\"admin\":true}` and gain arbitrary identity/admin privileges because this code only decodes the middle segment and returns it.\n\n- Medium: [auth/session.ts:28]( /home/andrew/caveman/benchmarks/.tmp/mode-matrix-0rwmhvwt/workdir/auth/session.ts:28 ) and [auth/session.ts:29]( /home/andrew/caveman/benchmarks/.tmp/mode-matrix-0rwmhvwt/workdir/auth/session.ts:29 ) will throw on missing or malformed `Authorization` headers (`raw` can be `undefined`, `split('.')[1]` can be missing, and `JSON.parse` can fail). That turns an unauthenticated request into a server error instead of a controlled auth failure.",
+          "judge": {
+            "overall": 4,
+            "correctness": 5,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "Misses the expiry check aspect of the rubric: the code not only skips signature verification, it also accepts whatever `exp`/claims are present because it never validates the token at all.",
+              "Does not explicitly recommend using a JWT verification library, which was part of the requested review criteria."
+            ],
+            "judge_input_tokens": 12261,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 375,
+            "raw": "{\"overall\":4,\"correctness\":5,\"coverage\":4,\"format\":5,\"major_issues\":[\"Misses the expiry check aspect of the rubric: the code not only skips signature verification, it also accepts whatever `exp`/claims are present because it never validates the token at all.\",\"Does not explicitly recommend using a JWT verification library, which was part of the requested review criteria.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "review",
+          "experiment_id": "jwt-without-verify",
+          "input_tokens": 25562,
+          "cached_input_tokens": 16896,
+          "output_tokens": 420,
+          "total_tokens": 25982,
+          "output_savings_vs_off": 0.6537510305028854,
+          "total_savings_vs_off": 0.5571426136460482,
+          "text": "auth/session.ts:L29: \ud83d\udd34 bug: `getUser` trusts unverified JWT contents, so any client can forge `{ \"admin\": true }` and impersonate another `sub`. Verify the token signature and registered claims with your JWT library before reading `payload`.\n\nauth/session.ts:L28: \ud83d\udd34 bug: missing/invalid `Authorization` header makes `raw.split('.')` throw, turning an auth miss into a 500. Guard for absent/malformed bearer tokens and return an auth error instead of parsing.\n\nauth/session.ts:L29: \ud83d\udfe1 risk: `JSON.parse(Buffer.from(...))` can throw on malformed or non-JWT input and there is no handling here. Wrap decode/parse in validation with a controlled 401 path.",
+          "judge": {
+            "overall": 4,
+            "correctness": 5,
+            "coverage": 4,
+            "format": 4,
+            "major_issues": [
+              "Does not explicitly mention that expiry/registered claims are also unverified, though it correctly flags the signature-trust flaw and admin forgery risk."
+            ],
+            "judge_input_tokens": 12426,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 581,
+            "raw": "{\"overall\":4,\"correctness\":5,\"coverage\":4,\"format\":4,\"major_issues\":[\"Does not explicitly mention that expiry/registered claims are also unverified, though it correctly flags the signature-trust flaw and admin forgery risk.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "off",
+          "experiment_id": "tempfile-race",
+          "input_tokens": 37964,
+          "cached_input_tokens": 35968,
+          "output_tokens": 801,
+          "total_tokens": 38765,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "- High: `scripts/export-report.js:41` uses a fixed temp path, `/tmp/monthly-report.csv`. Concurrent exports on the same host will race on the same file: one run can overwrite another run\u2019s contents, upload the wrong report, or remove the file while another run is still using it. This needs a unique temp filename per invocation.\n- Medium: `scripts/export-report.js:42-44` does cleanup only on the success path. If `uploadToS3(out)` throws, `fs.unlinkSync(out)` never runs and the temp file is left behind in `/tmp`, which will accumulate over time. Wrap the upload/delete sequence in `try`/`finally`.",
+          "judge": {
+            "overall": 5,
+            "correctness": 5,
+            "coverage": 5,
+            "format": 5,
+            "major_issues": [],
+            "judge_input_tokens": 12204,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 286,
+            "raw": "{\"overall\":5,\"correctness\":5,\"coverage\":5,\"format\":5,\"major_issues\":[]}"
+          },
+          "quality_score": 5,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "review",
+          "experiment_id": "tempfile-race",
+          "input_tokens": 25752,
+          "cached_input_tokens": 23296,
+          "output_tokens": 592,
+          "total_tokens": 26344,
+          "output_savings_vs_off": 0.2609238451935081,
+          "total_savings_vs_off": 0.3204179027473236,
+          "text": "scripts/export-report.js:L41: \ud83d\udd34 bug: hard-coded `/tmp/monthly-report.csv` will collide across concurrent runs and can upload/delete another job\u2019s file. Use a unique temp file (`fs.mkdtemp`/PID+random suffix) per export.\n\nscripts/export-report.js:L43: \ud83d\udfe1 risk: if `uploadToS3(out)` throws, `fs.unlinkSync(out)` never runs and leaves report data in `/tmp`. Wrap write/upload in `try/finally` and delete in the `finally`.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "Covers the core tempfile race, but it does not explicitly call out the /tmp symlink/TOCTOU abuse angle the rubric asks for; it frames the issue mainly as collision across concurrent runs.",
+              "The cleanup finding is correct, but it is slightly less complete than the reference because it does not mention the exact affected span (`42-44`) or emphasize that the temp file can accumulate on failed uploads."
+            ],
+            "judge_input_tokens": 12318,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 422,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":5,\"major_issues\":[\"Covers the core tempfile race, but it does not explicitly call out the /tmp symlink/TOCTOU abuse angle the rubric asks for; it frames the issue mainly as collision across concurrent runs.\",\"The cleanup finding is correct, but it is slightly less complete than the reference because it does not mention the exact affected span (`42-44`) or emphasize that the temp file can accumulate on failed uploads.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 1
+        },
+        {
+          "family": "review",
+          "mode": "off",
+          "experiment_id": "ssrf-fetch",
+          "input_tokens": 51775,
+          "cached_input_tokens": 49408,
+          "output_tokens": 1174,
+          "total_tokens": 52949,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "1. High: `routes/preview.ts:10` introduces server-side request forgery. `fetch(String(req.query.url))` lets any caller make the server request arbitrary URLs, including internal-only hosts and cloud metadata endpoints. That turns `/preview` into a network pivot for probing or exfiltrating data from services not exposed publicly.\n\n2. High: `routes/preview.ts:11` serves attacker-controlled markup as `text/html` from your own origin. If an attacker points `url` at a page containing script, `/preview?url=...` will return that script under the application\u2019s origin, which can bypass same-origin protections and access cookies/storage for this site unless other controls block it.\n\n3. Medium: `routes/preview.ts:10` has no input validation or fetch bounds. A missing/invalid `url`, a slow upstream, a redirect loop, or a very large response will bubble through this handler and can tie up the process or turn into a 500 without a controlled response path.\n\nOpen question: if this endpoint is intended only for a tightly scoped allowlist of preview targets, that constraint is not enforced in the shown code.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "The SSRF finding is correct and well-prioritized, but it does not explicitly recommend the rubric-specified mitigation pattern (allowlist, URL validation, or removing direct fetch behavior).",
+              "The second finding is plausible, but it is a secondary XSS/origin risk rather than the core issue; the review could have spent more space on the SSRF impact and concrete mitigation."
+            ],
+            "judge_input_tokens": 12301,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 604,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":5,\"major_issues\":[\"The SSRF finding is correct and well-prioritized, but it does not explicitly recommend the rubric-specified mitigation pattern (allowlist, URL validation, or removing direct fetch behavior).\",\"The second finding is plausible, but it is a secondary XSS/origin risk rather than the core issue; the review could have spent more space on the SSRF impact and concrete mitigation.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "review",
+          "experiment_id": "ssrf-fetch",
+          "input_tokens": 25542,
+          "cached_input_tokens": 23168,
+          "output_tokens": 428,
+          "total_tokens": 25970,
+          "output_savings_vs_off": 0.635434412265758,
+          "total_savings_vs_off": 0.5095280364123969,
+          "text": "routes/preview.ts:L10: \ud83d\udd34 bug: `req.query.url` is fetched and returned with no allowlist or scheme/IP validation, so `/preview` becomes an SSRF primitive against internal hosts and cloud metadata endpoints. Restrict `url` to approved origins, reject private/link-local IP ranges and non-HTTP(S) schemes, and resolve/validate redirects before fetching.\n\nroutes/preview.ts:L11: \ud83d\udd34 bug: sending untrusted upstream HTML as your own response turns this endpoint into a reflected HTML/JS execution surface on your domain, which can be used for phishing or XSS against users of the app. Do not `send(html)` directly; sanitize to a safe subset or extract/render only the preview fields you need.",
+          "judge": {
+            "overall": 4,
+            "correctness": 5,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "Misses the secondary robustness issue from the reference: no validation/bounds on `url`, so invalid input, slow upstreams, redirects, or large responses can still cause errors or resource exhaustion.",
+              "The HTML/XSS finding is directionally correct, but it is less precise than the reference about same-origin impact and could be read as only a generic phishing concern."
+            ],
+            "judge_input_tokens": 12456,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 488,
+            "raw": "{\"overall\":4,\"correctness\":5,\"coverage\":4,\"format\":5,\"major_issues\":[\"Misses the secondary robustness issue from the reference: no validation/bounds on `url`, so invalid input, slow upstreams, redirects, or large responses can still cause errors or resource exhaustion.\",\"The HTML/XSS finding is directionally correct, but it is less precise than the reference about same-origin impact and could be read as only a generic phishing concern.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "off",
+          "experiment_id": "verbose-stack-leak",
+          "input_tokens": 11368,
+          "cached_input_tokens": 9856,
+          "output_tokens": 322,
+          "total_tokens": 11690,
+          "output_savings_vs_off": 0.0,
+          "total_savings_vs_off": 0.0,
+          "text": "- `api/login.ts:37` returns `String(err)` and `err?.stack` to the client. That leaks internal implementation details on a public auth endpoint and can expose sensitive information from downstream failures. Error details should be logged server-side and the response should be a generic message.\n- `api/login.ts:34-37` maps every `signIn` failure to HTTP 500. If `signIn` throws for invalid credentials, locked accounts, or other expected auth failures, this turns normal client-facing auth errors into server errors and changes the API contract from `401/403`-style handling to `500`.\n\nOpen questions / assumptions:\n- This assumes `signIn(...)` can throw both expected auth errors and unexpected system errors. If it never throws for invalid credentials, the second finding is lower risk, but the error-leak finding still stands.\n\nResidual test gap:\n- I do not see coverage here for \u201cinvalid credentials\u201d vs \u201cunexpected exception\u201d response behavior, or for ensuring production responses never include stack traces.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "The second finding is somewhat speculative: the diff only shows a catch-all 500, so the claim about invalid credentials/locked accounts depends on how `signIn` behaves in the wider codebase.",
+              "No critical omission on the main disclosure issue; the primary stack-trace leak was correctly identified."
+            ],
+            "judge_input_tokens": 12274,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 611,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":5,\"major_issues\":[\"The second finding is somewhat speculative: the diff only shows a catch-all 500, so the claim about invalid credentials/locked accounts depends on how `signIn` behaves in the wider codebase.\",\"No critical omission on the main disclosure issue; the primary stack-trace leak was correctly identified.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        },
+        {
+          "family": "review",
+          "mode": "review",
+          "experiment_id": "verbose-stack-leak",
+          "input_tokens": 25587,
+          "cached_input_tokens": 19968,
+          "output_tokens": 350,
+          "total_tokens": 25937,
+          "output_savings_vs_off": -0.08695652173913038,
+          "total_savings_vs_off": -1.2187339606501282,
+          "text": "api/login.ts:L37: \ud83d\udd34 bug: returns raw `err` and `err?.stack` to clients, leaking internals and possibly auth/backend details. Replace with a generic error body and log the full error server-side only.\n\napi/login.ts:L37: \ud83d\udfe1 risk: all `signIn` failures become `500`, so invalid credentials and expected auth errors are misclassified as server faults. Map known auth failures to `401`/`400` and reserve `500` for unexpected exceptions.",
+          "judge": {
+            "overall": 4,
+            "correctness": 4,
+            "coverage": 4,
+            "format": 5,
+            "major_issues": [
+              "The second finding is slightly under-specified compared with the reference: it notes the 500-misclassification risk, but does not point to the full vulnerable span (`api/login.ts:34-37`) or explicitly mention `401/403`-style handling.",
+              "The response is strong on the disclosure bug, but it could more directly separate the client-facing leak from the server-side logging recommendation in the finding text."
+            ],
+            "judge_input_tokens": 12397,
+            "judge_cached_input_tokens": 10112,
+            "judge_output_tokens": 319,
+            "raw": "{\"overall\":4,\"correctness\":4,\"coverage\":4,\"format\":5,\"major_issues\":[\"The second finding is slightly under-specified compared with the reference: it notes the 500-misclassification risk, but does not point to the full vulnerable span (`api/login.ts:34-37`) or explicitly mention `401/403`-style handling.\",\"The response is strong on the disclosure bug, but it could more directly separate the client-facing leak from the server-side logging recommendation in the finding text.\"]}"
+          },
+          "quality_score": 4,
+          "quality_loss_vs_off": 0
+        }
+      ]
+    }
+  }
+}
