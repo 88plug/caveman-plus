@@ -2,16 +2,20 @@
   <img src="https://em-content.zobj.net/source/apple/391/rock_1faa8.png" width="120" />
 </p>
 
-<h1 align="center">caveman</h1>
+<h1 align="center">caveman-plus</h1>
 
 <p align="center">
-  <strong>why use many token when few do trick</strong>
+  <strong>why use many token when few do trick</strong><br/><sub>88plug edition · full-plus default · benchmarked winner</sub>
 </p>
 
 <p align="center">
-  <a href="https://github.com/JuliusBrussee/caveman/stargazers"><img src="https://img.shields.io/github/stars/JuliusBrussee/caveman?style=flat&color=yellow" alt="Stars"></a>
-  <a href="https://github.com/JuliusBrussee/caveman/commits/main"><img src="https://img.shields.io/github/last-commit/JuliusBrussee/caveman?style=flat" alt="Last Commit"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/JuliusBrussee/caveman?style=flat" alt="License"></a>
+  <a href="https://github.com/88plug/caveman-plus/stargazers"><img src="https://img.shields.io/github/stars/88plug/caveman-plus?style=flat&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/88plug/caveman-plus/commits/main"><img src="https://img.shields.io/github/last-commit/88plug/caveman-plus?style=flat" alt="Last Commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/88plug/caveman-plus?style=flat" alt="License"></a>
+</p>
+
+<p align="center">
+  <em>Fork of <a href="https://github.com/JuliusBrussee/caveman">JuliusBrussee/caveman</a> — this 88plug edition ships <code>full-plus</code> as default (benchmarked +44.1% general / +45.5% dialogue savings, near-zero quality cost). Upstream credit to Julius Brussee for the original caveman.</em>
 </p>
 
 <p align="center">
@@ -133,14 +137,14 @@ Pick your agent. One command. Done.
 
 | Agent | Install |
 |-------|---------|
-| **Claude Code** | `claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman` |
+| **Claude Code** | `claude plugin marketplace add 88plug/caveman-plus && claude plugin install caveman-plus@caveman-plus` |
 | **Codex** | Clone repo → `/plugins` → Search "Caveman" → Install |
-| **Gemini CLI** | `gemini extensions install https://github.com/JuliusBrussee/caveman` |
-| **Cursor** | `npx skills add JuliusBrussee/caveman -a cursor` |
-| **Windsurf** | `npx skills add JuliusBrussee/caveman -a windsurf` |
-| **Copilot** | `npx skills add JuliusBrussee/caveman -a github-copilot` |
-| **Cline** | `npx skills add JuliusBrussee/caveman -a cline` |
-| **Any other** | `npx skills add JuliusBrussee/caveman` |
+| **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` |
+| **Cursor** | `npx skills add 88plug/caveman-plus -a cursor` |
+| **Windsurf** | `npx skills add 88plug/caveman-plus -a windsurf` |
+| **Copilot** | `npx skills add 88plug/caveman-plus -a github-copilot` |
+| **Cline** | `npx skills add 88plug/caveman-plus -a cline` |
+| **Any other** | `npx skills add 88plug/caveman-plus` |
 
 Install once. Use in every session for that install target after that. One rock. That it.
 
@@ -174,17 +178,17 @@ Auto-activation is built in for Claude Code, Gemini CLI, and the repo-local Code
 The plugin install gives you skills + auto-loading hooks. If no custom `statusLine` is configured, Caveman nudges Claude to offer badge setup on first session.
 
 ```bash
-claude plugin marketplace add JuliusBrussee/caveman
-claude plugin install caveman@caveman
+claude plugin marketplace add 88plug/caveman-plus
+claude plugin install caveman-plus@caveman-plus
 ```
 
 **Standalone hooks (without plugin):** If you prefer not to use the plugin system:
 ```bash
 # macOS / Linux / WSL
-bash <(curl -s https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/88plug/caveman-plus/main/hooks/install.sh)
 
 # Windows (PowerShell)
-irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks/install.ps1 | iex
+irm https://raw.githubusercontent.com/88plug/caveman-plus/main/hooks/install.ps1 | iex
 ```
 
 Or from a local clone: `bash hooks/install.sh` / `powershell -File hooks\install.ps1`
@@ -226,7 +230,7 @@ codex_hooks = true
 <summary><strong>Gemini CLI — full details</strong></summary>
 
 ```bash
-gemini extensions install https://github.com/JuliusBrussee/caveman
+gemini extensions install https://github.com/88plug/caveman-plus
 ```
 
 Update: `gemini extensions update caveman` · Uninstall: `gemini extensions uninstall caveman`
@@ -245,10 +249,10 @@ Auto-activates via `GEMINI.md` context file. Also ships custom Gemini commands:
 
 | Agent | Command | Not installed | Mode switching | Always-on location |
 |-------|---------|--------------|:--------------:|--------------------|
-| Cursor | `npx skills add JuliusBrussee/caveman -a cursor` | `.cursor/rules/caveman.mdc` | Y | Cursor rules |
-| Windsurf | `npx skills add JuliusBrussee/caveman -a windsurf` | `.windsurf/rules/caveman.md` | Y | Windsurf rules |
-| Cline | `npx skills add JuliusBrussee/caveman -a cline` | `.clinerules/caveman.md` | — | Cline rules or system prompt |
-| Copilot | `npx skills add JuliusBrussee/caveman -a github-copilot` | `.github/copilot-instructions.md` + `AGENTS.md` | — | Copilot custom instructions |
+| Cursor | `npx skills add 88plug/caveman-plus -a cursor` | `.cursor/rules/caveman.mdc` | Y | Cursor rules |
+| Windsurf | `npx skills add 88plug/caveman-plus -a windsurf` | `.windsurf/rules/caveman.md` | Y | Windsurf rules |
+| Cline | `npx skills add 88plug/caveman-plus -a cline` | `.clinerules/caveman.md` | — | Cline rules or system prompt |
+| Copilot | `npx skills add 88plug/caveman-plus -a github-copilot` | `.github/copilot-instructions.md` + `AGENTS.md` | — | Copilot custom instructions |
 
 Uninstall: `npx skills remove caveman`
 
@@ -262,18 +266,18 @@ Copilot works with Chat, Edits, and Coding Agent.
 [npx skills](https://github.com/vercel-labs/skills) supports 40+ agents:
 
 ```bash
-npx skills add JuliusBrussee/caveman           # auto-detect agent
-npx skills add JuliusBrussee/caveman -a amp
-npx skills add JuliusBrussee/caveman -a augment
-npx skills add JuliusBrussee/caveman -a goose
-npx skills add JuliusBrussee/caveman -a kiro-cli
-npx skills add JuliusBrussee/caveman -a roo
+npx skills add 88plug/caveman-plus           # auto-detect agent
+npx skills add 88plug/caveman-plus -a amp
+npx skills add 88plug/caveman-plus -a augment
+npx skills add 88plug/caveman-plus -a goose
+npx skills add 88plug/caveman-plus -a kiro-cli
+npx skills add 88plug/caveman-plus -a roo
 # ... and many more
 ```
 
 Uninstall: `npx skills remove caveman`
 
-> **Windows note:** `npx skills` uses symlinks by default. If symlinks fail, add `--copy`: `npx skills add JuliusBrussee/caveman --copy`
+> **Windows note:** `npx skills` uses symlinks by default. If symlinks fail, add `--copy`: `npx skills add 88plug/caveman-plus --copy`
 
 **Important:** These agents don't have a hook system, so caveman won't auto-start. Say `/caveman` or "talk like caveman" to activate each session.
 
@@ -413,7 +417,7 @@ uv run --with tiktoken python evals/measure.py
 
 If caveman save you mass token, mass money — leave mass star. ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JuliusBrussee/caveman&type=Date)](https://star-history.com/#JuliusBrussee/caveman&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=88plug/caveman-plus&type=Date)](https://star-history.com/#88plug/caveman-plus&Date)
 
 ## 🪨 The Caveman Ecosystem
 
@@ -421,7 +425,7 @@ Three tools. One philosophy: **agent do more with less**.
 
 | Repo | What | One-liner |
 |------|------|-----------|
-| [**caveman**](https://github.com/JuliusBrussee/caveman) *(you are here)* | Output compression skill | *why use many token when few do trick* — ~75% fewer output tokens across Claude Code, Cursor, Gemini, Codex |
+| [**caveman**](https://github.com/88plug/caveman-plus) *(you are here)* | Output compression skill | *why use many token when few do trick* — ~75% fewer output tokens across Claude Code, Cursor, Gemini, Codex |
 | [**cavemem**](https://github.com/JuliusBrussee/cavemem) | Cross-agent persistent memory | *why agent forget when agent can remember* — compressed SQLite + MCP, local by default |
 | [**cavekit**](https://github.com/JuliusBrussee/cavekit) | Spec-driven autonomous build loop | *why agent guess when agent can know* — natural language → kits → parallel build → verified |
 

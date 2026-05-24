@@ -3,7 +3,7 @@
 # Usage: powershell -ExecutionPolicy Bypass -File hooks\install.ps1
 #   or:  powershell -ExecutionPolicy Bypass -File hooks\install.ps1 -Force
 #   or (remote, no -Force support via pipe):
-#        irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks/install.ps1 | iex
+#        irm https://raw.githubusercontent.com/88plug/caveman-plus/main/hooks/install.ps1 | iex
 #   Note: irm ... | iex cannot pass -Force. For force reinstall, save the file and run with -File.
 param(
     [switch]$Force
@@ -23,8 +23,8 @@ $ClaudeDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-
 $HooksDir = Join-Path $ClaudeDir "hooks"
 $SkillsDir = Join-Path $ClaudeDir "skills"
 $Settings = Join-Path $ClaudeDir "settings.json"
-$RepoUrl = "https://raw.githubusercontent.com/JuliusBrussee/caveman/main/hooks"
-$SkillUrl = "https://raw.githubusercontent.com/JuliusBrussee/caveman/main/skills/caveman/SKILL.md"
+$RepoUrl = "https://raw.githubusercontent.com/88plug/caveman-plus/main/hooks"
+$SkillUrl = "https://raw.githubusercontent.com/88plug/caveman-plus/main/skills/caveman/SKILL.md"
 
 $HookFiles = @("package.json", "caveman-config.js", "caveman-activate.js", "caveman-mode-tracker.js", "caveman-statusline.sh", "caveman-statusline.ps1")
 

@@ -1,9 +1,9 @@
 {
-  "name": "caveman",
+  "name": "caveman-plus",
   "description": "Ultra-compressed communication mode. Cuts ~75% of tokens while keeping full technical accuracy by speaking like a caveman.",
   "author": {
-    "name": "Julius Brussee",
-    "url": "https://github.com/JuliusBrussee"
+    "name": "88plug",
+    "url": "https://github.com/88plug"
   },
   "hooks": {
     "SessionStart": [

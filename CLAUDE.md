@@ -176,7 +176,7 @@ How caveman reaches each agent type:
 | Windsurf | `.windsurf/rules/caveman.md` with `trigger: always_on` | Yes — always-on rule |
 | Cline | `.clinerules/caveman.md` (auto-discovered) | Yes — Cline injects all .clinerules files |
 | Copilot | `.github/copilot-instructions.md` + `AGENTS.md` | Yes — repo-wide instructions |
-| Others | `npx skills add JuliusBrussee/caveman` | No — user must say `/caveman` each session |
+| Others | `npx skills add 88plug/caveman-plus` | No — user must say `/caveman` each session |
 
 For agents without hook systems, minimal always-on snippet lives in README under "Want it always on?" — keep current with `rules/caveman-activate.md`.
 
