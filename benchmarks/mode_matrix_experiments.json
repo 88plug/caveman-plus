@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "families": {
+    "general": {
+      "description": "General answer-style benchmark for off, lite, full, full-plus, ultra, and mello variants.",
+      "modes": ["off", "lite", "full", "full-plus", "ultra", "mello-lite", "mello", "mello-ultra"],
+      "experiments": [
+        {
+          "id": "react-rerender",
+          "prompt": "Why is my React component re-rendering on every state update even though the props haven't changed? I'm passing an object as a prop.",
+          "rubric": [
+            "Explain that inline object props create a new reference on every render.",
+            "State that referential identity, not deep equality, drives the prop-change check.",
+            "Recommend stabilizing the object with useMemo or moving it outside render.",
+            "Give a concrete fix rather than only naming the problem."
+          ]
+        },
+        {
+          "id": "auth-expiry-fix",
+          "prompt": "My Express auth middleware is letting expired JWT tokens through. The expiry check uses Date.now() compared to the token's exp field. What's wrong and how do I fix it?",
+          "rubric": [
+            "Explain that JWT exp is usually seconds since epoch while Date.now() is milliseconds.",
+            "Show a correct fix using Date.now() / 1000 or exp * 1000 consistently.",
+            "Recommend using a JWT library's verification path instead of hand-rolled expiry logic when possible.",
+            "Mention edge handling such as clock skew or <= vs < only if the main unit mismatch is already covered."
+          ]
+        },
+        {
+          "id": "postgres-pool",
+          "prompt": "How do I set up a PostgreSQL connection pool in Node.js with proper timeout and error handling configuration?",
+          "rubric": [
+            "Use a pool abstraction rather than a single shared client.",
+            "Include practical pool settings such as max connections, idle timeout, and connection timeout.",
+            "Explain query or client release behavior so connections are not leaked.",
+            "Mention error handling for pool errors or graceful shutdown."
+          ]
+        },
+        {
+          "id": "race-condition-debug",
+          "prompt": "My Node.js API endpoint that increments a counter in PostgreSQL sometimes returns the same value for concurrent requests. How do I fix this race condition?",
+          "rubric": [
+            "Identify the read-modify-write race under concurrent requests.",
+            "Recommend an atomic UPDATE statement, SELECT ... FOR UPDATE, or another transactional fix.",
+            "Explain why concurrent requests can observe the same old value.",
+            "Show or describe a concrete safe query or transaction pattern."
+          ]
+        },
+        {
+          "id": "error-boundary",
+          "prompt": "Implement a React error boundary component that catches render errors, shows a fallback UI with a retry button, and logs the error details.",
+          "rubric": [
+            "Use a class-based error boundary or another valid React error-boundary pattern.",
+            "Reset boundary state when the retry action is triggered.",
+            "Log or surface error details in a developer-appropriate way.",
+            "Provide working fallback UI behavior instead of explanation only."
+          ]
+        }
+      ]
+    },
+    "dialogue": {
+      "description": "Multi-turn carryover benchmark for off vs full vs full-plus on the same continuing task thread.",
+      "modes": ["off", "full", "full-plus"],
+      "experiments": [
+        {
+          "id": "react-followup-thread",
+          "turns": [
+            "Why is my React component re-rendering on every state update even though the props haven't changed? I'm passing an object as a prop.",
+            "Show the smallest safe fix with `useMemo`, and explain why `React.memo` alone is not enough.",
+            "Now give me a one-paragraph code review comment I could leave on the PR."
+          ],
+          "rubric": [
+            "Final output should still reflect the core referential-identity explanation from earlier turns.",
+            "Final output should preserve the distinction between stabilizing props and using React.memo alone.",
+            "Final output should fit the requested final-turn format rather than resetting into a full fresh explanation."
+          ]
+        },
+        {
+          "id": "jwt-followup-thread",
+          "turns": [
+            "My Express auth middleware is letting expired JWT tokens through. The expiry check uses Date.now() compared to the token's exp field. What's wrong and how do I fix it?",
+            "Show a minimal code fix, then tell me the safer library-based alternative.",
+            "Now compress this into a deployment note for the team: one short paragraph."
+          ],
+          "rubric": [
+            "Final output should preserve the seconds-vs-milliseconds root cause from earlier turns.",
+            "Final output should mention the safer verify-library path, not only the hand fix.",
+            "Final output should satisfy the requested deployment-note format without drifting verbose."
+          ]
+        },
+        {
+          "id": "postgres-followup-thread",
+          "turns": [
+            "How do I set up a PostgreSQL connection pool in Node.js with proper timeout and error handling configuration?",
+            "Trim it to a practical starter config for one app process.",
+            "Now give me a checklist for code review: 4 bullets max."
+          ],
+          "rubric": [
+            "Final output should preserve pool basics: shared pool, timeout settings, release/shutdown behavior.",
+            "Final output should avoid introducing unsafe timeout wrapper ideas.",
+            "Final output should match the requested short checklist format."
+          ]
+        },
+        {
+          "id": "race-followup-thread",
+          "turns": [
+            "My Node.js API endpoint that increments a counter in PostgreSQL sometimes returns the same value for concurrent requests. How do I fix this race condition?",
+            "Show the concrete SQL or Node query pattern you want me to use.",
+            "Now restate it as a bug ticket comment in 3 short bullets."
+          ],
+          "rubric": [
+            "Final output should preserve the read-modify-write race explanation from earlier turns.",
+            "Final output should preserve the atomic UPDATE or equivalent safe transactional fix.",
+            "Final output should match the requested short bug-ticket style."
+          ]
+        },
+        {
+          "id": "error-boundary-followup-thread",
+          "turns": [
+            "Implement a React error boundary component that catches render errors, shows a fallback UI with a retry button, and logs the error details.",
+            "Trim to the smallest usable version and note what I can customize later.",
+            "Now write a short summary for the PR description."
+          ],
+          "rubric": [
+            "Final output should preserve the core boundary behavior from earlier turns: catch, fallback, retry, logging.",
+            "Final output should reflect the later simplification request instead of restarting from scratch.",
+            "Final output should match the requested short PR-summary format."
+          ]
+        }
+      ]
+    },
+    "commit": {
+      "description": "Commit-message benchmark for off vs caveman commit mode.",
+      "modes": ["off", "commit"],
+      "experiments": [
+        {
+          "id": "jwt-expiry-units",
+          "prompt": "Write a commit message for this change. Return only the commit message.\n\nContext:\n- Express auth middleware compared JWT exp directly to Date.now()\n- This let expired tokens through because exp was seconds and Date.now() was milliseconds\n- Fix converts Date.now() to seconds and adds a regression test\n- This was breaking staging login flows",
+          "rubric": [
+            "Use Conventional Commits format.",
+            "Capture that the fix is about JWT expiry unit mismatch.",
+            "Include why the change matters, not only what files changed.",
+            "Keep the subject short and imperative."
+          ]
+        },
+        {
+          "id": "docker-multistage",
+          "prompt": "Write a commit message for this change. Return only the commit message.\n\nContext:\n- Replace single-stage Dockerfile with a multi-stage build\n- Install dev dependencies only in builder stage\n- Copy compiled output into slim runtime image\n- Goal is smaller production images and faster deploys",
+          "rubric": [
+            "Use Conventional Commits format.",
+            "Describe that this change reduces production image size or deploy cost.",
+            "Prefer an appropriate type like build, perf, or chore instead of a vague subject.",
+            "Keep the message concise and readable."
+          ]
+        },
+        {
+          "id": "error-boundary-retry",
+          "prompt": "Write a commit message for this change. Return only the commit message.\n\nContext:\n- Add a reusable React error boundary component\n- Fallback UI shows retry button and logs captured error details\n- Product team needed a safer crash path for dashboard widgets",
+          "rubric": [
+            "Use Conventional Commits format.",
+            "State that an error boundary or fallback path was added.",
+            "Include the user-facing reason or benefit.",
+            "Keep subject short and imperative."
+          ]
+        },
+        {
+          "id": "symlink-hardening",
+          "prompt": "Write a commit message for this change. Return only the commit message.\n\nContext:\n- Refuse symlink targets when reading or writing the caveman mode flag file\n- Add size cap and whitelist checks to avoid leaking arbitrary file contents into prompts\n- This is a security hardening patch",
+          "rubric": [
+            "Use a security-appropriate Conventional Commit type such as fix.",
+            "Make clear that symlink or file-read hardening is the change.",
+            "Include the security reason in the body if needed.",
+            "Do not waste the subject on filenames."
+          ]
+        },
+        {
+          "id": "websocket-refresh-race",
+          "prompt": "Write a commit message for this change. Return only the commit message.\n\nContext:\n- WebSocket reconnect logic raced with JWT refresh after network interruption\n- Client could reconnect using an expired token before refresh finished\n- Fix serializes refresh and reconnect order\n- This was blocking an enterprise demo",
+          "rubric": [
+            "Use Conventional Commits format.",
+            "Capture that the bug was a reconnect or token-refresh race.",
+            "Preserve the operational why, such as preventing expired-token reconnects.",
+            "Keep the subject concise."
+          ]
+        }
+      ]
+    },
+    "review": {
+      "description": "Code-review benchmark for off vs caveman review mode.",
+      "modes": ["off", "review"],
+      "experiments": [
+        {
+          "id": "sql-injection",
+          "prompt": "Review this diff. Findings first. Include file:line in each finding.\n\napi/users.js\n12 app.get('/api/users/:id', async (req, res) => {\n13   const query = `SELECT * FROM users WHERE id = ${req.params.id}`;\n14   const user = await db.query(query);\n15   res.json(user.rows[0]);\n16 });",
+          "rubric": [
+            "Flag SQL injection risk from string interpolation of req.params.id.",
+            "Recommend parameterized queries as the fix.",
+            "Reference the risky line number.",
+            "Prioritize the injection finding above lower-severity notes."
+          ]
+        },
+        {
+          "id": "jwt-without-verify",
+          "prompt": "Review this diff. Findings first. Include file:line in each finding.\n\nauth/session.ts\n27 export function getUser(req: Request) {\n28   const raw = req.headers.authorization?.replace('Bearer ', '');\n29   const payload = JSON.parse(Buffer.from(raw.split('.')[1], 'base64').toString());\n30   return { id: payload.sub, admin: payload.admin };\n31 }",
+          "rubric": [
+            "Flag that the code decodes JWT payload without verifying signature or expiry.",
+            "Explain that client-controlled tokens can forge admin claims.",
+            "Recommend using a JWT verification library.",
+            "Reference the risky line number."
+          ]
+        },
+        {
+          "id": "tempfile-race",
+          "prompt": "Review this diff. Findings first. Include file:line in each finding.\n\nscripts/export-report.js\n41 const out = '/tmp/monthly-report.csv';\n42 fs.writeFileSync(out, renderCsv(rows));\n43 await uploadToS3(out);\n44 fs.unlinkSync(out);",
+          "rubric": [
+            "Flag predictable temporary file path risk or race issues in /tmp.",
+            "Recommend mkdtemp, a unique temp filename, or streaming instead.",
+            "Reference the risky line number.",
+            "Explain collision or symlink abuse risk, not only style concerns."
+          ]
+        },
+        {
+          "id": "ssrf-fetch",
+          "prompt": "Review this diff. Findings first. Include file:line in each finding.\n\nroutes/preview.ts\n9 app.get('/preview', async (req, res) => {\n10   const html = await fetch(String(req.query.url)).then(r => r.text());\n11   res.type('html').send(html);\n12 });",
+          "rubric": [
+            "Flag SSRF risk from fetching arbitrary user-provided URLs.",
+            "Recommend allowlisting, URL validation, or removing direct fetch behavior.",
+            "Reference the risky line number.",
+            "Prioritize SSRF as the main finding."
+          ]
+        },
+        {
+          "id": "verbose-stack-leak",
+          "prompt": "Review this diff. Findings first. Include file:line in each finding.\n\napi/login.ts\n33 try {\n34   const token = await signIn(req.body.email, req.body.password);\n35   res.json({ token });\n36 } catch (err) {\n37   res.status(500).json({ error: String(err), stack: err?.stack });\n38 }",
+          "rubric": [
+            "Flag information disclosure from returning raw error messages or stack traces to clients.",
+            "Recommend sanitized error responses and server-side logging.",
+            "Reference the risky line number.",
+            "Treat disclosure as the primary issue."
+          ]
+        }
+      ]
+    },
+    "compress": {
+      "description": "Compression benchmark for off vs caveman compress mode.",
+      "modes": ["off", "compress"],
+      "experiments": [
+        {
+          "id": "claude-md-project",
+          "original_path": "tests/caveman-compress/claude-md-project.original.md",
+          "rubric": [
+            "Preserve technical facts and operational instructions.",
+            "Preserve headings, code blocks, URLs, commands, and file paths exactly.",
+            "Shorten prose materially without deleting important content."
+          ]
+        },
+        {
+          "id": "claude-md-preferences",
+          "original_path": "tests/caveman-compress/claude-md-preferences.original.md",
+          "rubric": [
+            "Preserve user preferences and workflow constraints.",
+            "Preserve structure and any exact technical literals.",
+            "Reduce stored token count meaningfully."
+          ]
+        },
+        {
+          "id": "project-notes",
+          "original_path": "tests/caveman-compress/project-notes.original.md",
+          "rubric": [
+            "Preserve dates, names, numbers, and technical commitments.",
+            "Preserve headings and bullet structure.",
+            "Shorten prose without dropping project-critical facts."
+          ]
+        },
+        {
+          "id": "todo-list",
+          "original_path": "tests/caveman-compress/todo-list.original.md",
+          "rubric": [
+            "Preserve task owners, dates, issue IDs, and blockers.",
+            "Preserve task list structure.",
+            "Reduce verbosity while keeping tasks actionable."
+          ]
+        },
+        {
+          "id": "mixed-with-code",
+          "original_path": "tests/caveman-compress/mixed-with-code.original.md",
+          "rubric": [
+            "Preserve code blocks and inline code exactly.",
+            "Preserve technical instructions around the code.",
+            "Compress only the prose sections."
+          ]
+        }
+      ]
+    }
+  }
+}

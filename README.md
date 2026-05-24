@@ -2,16 +2,20 @@
   <img src="https://em-content.zobj.net/source/apple/391/rock_1faa8.png" width="120" />
 </p>
 
-<h1 align="center">caveman</h1>
+<h1 align="center">caveman-plus</h1>
 
 <p align="center">
-  <strong>why use many token when few do trick</strong>
+  <strong>why use many token when few do trick</strong><br/><sub>88plug edition · full-plus default · benchmarked winner</sub>
 </p>
 
 <p align="center">
-  <a href="https://github.com/JuliusBrussee/caveman/stargazers"><img src="https://img.shields.io/github/stars/JuliusBrussee/caveman?style=flat&color=yellow" alt="Stars"></a>
-  <a href="https://github.com/JuliusBrussee/caveman/commits/main"><img src="https://img.shields.io/github/last-commit/JuliusBrussee/caveman?style=flat" alt="Last Commit"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/JuliusBrussee/caveman?style=flat" alt="License"></a>
+  <a href="https://github.com/88plug/caveman-plus/stargazers"><img src="https://img.shields.io/github/stars/88plug/caveman-plus?style=flat&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/88plug/caveman-plus/commits/main"><img src="https://img.shields.io/github/last-commit/88plug/caveman-plus?style=flat" alt="Last Commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/88plug/caveman-plus?style=flat" alt="License"></a>
+</p>
+
+<p align="center">
+  <em>Fork of <a href="https://github.com/JuliusBrussee/caveman">JuliusBrussee/caveman</a> — this 88plug edition ships <code>full-plus</code> as default (benchmarked +44.1% general / +45.5% dialogue savings, near-zero quality cost). Upstream credit to Julius Brussee for the original caveman.</em>
 </p>
 
 <p align="center">
@@ -81,13 +85,13 @@ Pick your level of grunt — `lite` (drop filler), `full` (default caveman), `ul
 
 ### <img src="docs/assets/dancing-rock.svg" width="22" height="22" alt="rock"/> Like this trick? Now get whole agent — **caveman-code**
 
-This skill shrink what agent **say**. **[caveman-code](https://github.com/JuliusBrussee/caveman-code)** shrink **everything** — full terminal coding agent, caveman top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
+This skill shrink what agent **say**. **[caveman-code](https://github.com/88plug/caveman-plus-code)** shrink **everything** — full terminal coding agent, caveman top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
 
 ```bash
 npm install -g @juliusbrussee/caveman-code
 ```
 
-[**▶ Try caveman-code now →**](https://github.com/JuliusBrussee/caveman-code) — *why use many token when whole agent save*
+[**▶ Try caveman-code now →**](https://github.com/88plug/caveman-plus-code) — *why use many token when whole agent save*
 
 </td></tr>
 </table>
@@ -98,10 +102,10 @@ One line. Find every agent. Install for each.
 
 ```bash
 # macOS / Linux / WSL / Git Bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/install.sh | bash
 
 # Windows (PowerShell 5.1+)
-irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex
 ```
 
 ~30 seconds. Needs Node ≥18. Skip agent you no have. Safe to re-run.
@@ -183,10 +187,10 @@ Caveman teach lobster brevity — same canonical installer, scoped to one agent:
 
 ```bash
 # macOS / Linux / WSL
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash -s -- --only openclaw
+curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/install.sh | bash -s -- --only openclaw
 
 # Windows (PowerShell): no Node? install Node ≥18 first, then
-npx -y github:JuliusBrussee/caveman -- --only openclaw
+npx -y github:88plug/caveman-plus -- --only openclaw
 ```
 
 Two thing happen, no more:
@@ -211,8 +215,8 @@ Five tools. One philosophy: **agent do more with less**.
 
 | Repo | What |
 |------|------|
-| [**caveman**](https://github.com/JuliusBrussee/caveman) *(you here)* | Output compression — *why use many token when few do trick* |
-| [**caveman-code**](https://github.com/JuliusBrussee/caveman-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
+| [**caveman**](https://github.com/88plug/caveman-plus) *(you here)* | Output compression — *why use many token when few do trick* |
+| [**caveman-code**](https://github.com/88plug/caveman-plus-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
 | [**cavemem**](https://github.com/JuliusBrussee/cavemem) | Cross-agent memory — *why agent forget when agent can remember* |
 | [**cavekit**](https://github.com/JuliusBrussee/cavekit) | Spec-driven build loop — *why agent guess when agent can know* |
 | [**cavegemma**](https://github.com/JuliusBrussee/finetune-caveman) | Gemma 4 31B fine-tuned on caveman pairs — *why prompt every turn when weight remember* |
@@ -225,13 +229,13 @@ Compose: cavekit drive build, caveman compress what agent *say*, cavemem compres
 - [CONTRIBUTING.md](./CONTRIBUTING.md) — how to send patch
 - [CLAUDE.md](./CLAUDE.md) — maintainer guide (file ownership, hook architecture, CI)
 - [docs/](./docs/) — extra guides (Windows install, etc.)
-- [Issues](https://github.com/JuliusBrussee/caveman/issues) — bug, feature, weird behavior
+- [Issues](https://github.com/88plug/caveman-plus/issues) — bug, feature, weird behavior
 
 ## Star This Repo
 
 Caveman save you token, save you money. Star cost zero. Fair trade. ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JuliusBrussee/caveman&type=Date)](https://star-history.com/#JuliusBrussee/caveman&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=88plug/caveman-plus&type=Date)](https://star-history.com/#88plug/caveman-plus&Date)
 
 ## Also by Julius Brussee
 

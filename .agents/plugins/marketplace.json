@@ -1,11 +1,11 @@
 {
-  "name": "caveman-repo",
+  "name": "caveman-plus-repo",
   "interface": {
-    "displayName": "Caveman Repo"
+    "displayName": "Caveman+ Repo"
   },
   "plugins": [
     {
-      "name": "caveman",
+      "name": "caveman-plus",
       "source": {
         "source": "local",
         "path": "./plugins/caveman"

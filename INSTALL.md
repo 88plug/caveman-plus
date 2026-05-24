@@ -9,13 +9,13 @@ If just want it to work, run the one-liner. If want to know what gets touched, s
 **macOS / Linux / WSL / Git Bash**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/install.sh | bash
 ```
 
 **Windows (PowerShell 5.1+)**
 
 ```powershell
-irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex
 ```
 
 What it does:
@@ -28,7 +28,7 @@ What it does:
 Want to preview before installing? Use `--dry-run`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash -s -- --dry-run
+curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/install.sh | bash -s -- --dry-run
 ```
 
 ## Per-agent install
@@ -37,40 +37,40 @@ If you want to install for one agent (or want to know exactly what command runs 
 
 | Agent | Install command | Auto-activates? |
 |---|---|:-:|
-| **Claude Code** | `claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman` | Yes |
-| **Gemini CLI** | `gemini extensions install https://github.com/JuliusBrussee/caveman` | Yes |
-| **opencode** | `node bin/install.js --only opencode` *(or `npx -y github:JuliusBrussee/caveman -- --only opencode`)* | Yes (plugin + AGENTS.md) |
-| **OpenClaw** | `npx -y github:JuliusBrussee/caveman -- --only openclaw` | Yes (workspace skill + SOUL.md) |
-| **Codex CLI** | `npx skills add JuliusBrussee/caveman -a codex` | Per-session: `/caveman` |
-| **Cursor** | `npx skills add JuliusBrussee/caveman -a cursor` | Per-session by default; `--with-init` for an always-on rule file |
-| **Windsurf** | `npx skills add JuliusBrussee/caveman -a windsurf` | Per-session by default; `--with-init` for an always-on rule file |
-| **Cline** | `npx skills add JuliusBrussee/caveman -a cline` | Per-session by default; `--with-init` for an always-on rule file |
-| **GitHub Copilot** *(soft probe)* | `npx -y github:JuliusBrussee/caveman -- --only copilot --with-init` | Repo-wide instructions via `--with-init` |
-| **Continue** | `npx skills add JuliusBrussee/caveman -a continue` | No — say `/caveman` |
-| **Kilo Code** | `npx skills add JuliusBrussee/caveman -a kilo` | No |
-| **Roo Code** | `npx skills add JuliusBrussee/caveman -a roo` | No |
-| **Augment Code** | `npx skills add JuliusBrussee/caveman -a augment` | No |
-| **Aider Desk** | `npx skills add JuliusBrussee/caveman -a aider-desk` | No |
-| **Sourcegraph Amp** | `npx skills add JuliusBrussee/caveman -a amp` | No |
-| **IBM Bob** | `npx skills add JuliusBrussee/caveman -a bob` | No |
-| **Crush** | `npx skills add JuliusBrussee/caveman -a crush` | No |
-| **Devin (terminal)** | `npx skills add JuliusBrussee/caveman -a devin` | No |
-| **Droid (Factory)** | `npx skills add JuliusBrussee/caveman -a droid` | No |
-| **ForgeCode** | `npx skills add JuliusBrussee/caveman -a forgecode` | No |
-| **Block Goose** | `npx skills add JuliusBrussee/caveman -a goose` | No |
-| **iFlow CLI** | `npx skills add JuliusBrussee/caveman -a iflow-cli` | No |
-| **Kiro CLI** | `npx skills add JuliusBrussee/caveman -a kiro-cli` | No |
-| **Mistral Vibe** | `npx skills add JuliusBrussee/caveman -a mistral-vibe` | No |
-| **OpenHands** | `npx skills add JuliusBrussee/caveman -a openhands` | No |
-| **Qwen Code** | `npx skills add JuliusBrussee/caveman -a qwen-code` | No |
-| **Atlassian Rovo Dev** | `npx skills add JuliusBrussee/caveman -a rovodev` | No |
-| **Tabnine CLI** | `npx skills add JuliusBrussee/caveman -a tabnine-cli` | No |
-| **Trae** | `npx skills add JuliusBrussee/caveman -a trae` | No |
-| **Warp** | `npx skills add JuliusBrussee/caveman -a warp` | No |
-| **Replit Agent** | `npx skills add JuliusBrussee/caveman -a replit` | No |
-| **JetBrains Junie** *(soft probe)* | `npx skills add JuliusBrussee/caveman -a junie` | No |
-| **Qoder** *(soft probe)* | `npx skills add JuliusBrussee/caveman -a qoder` | No |
-| **Google Antigravity** *(soft probe)* | `npx skills add JuliusBrussee/caveman -a antigravity` | No |
+| **Claude Code** | `claude plugin marketplace add 88plug/caveman-plus && claude plugin install caveman-plus@caveman-plus` | Yes |
+| **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` | Yes |
+| **opencode** | `node bin/install.js --only opencode` *(or `npx -y github:88plug/caveman-plus -- --only opencode`)* | Yes (plugin + AGENTS.md) |
+| **OpenClaw** | `npx -y github:88plug/caveman-plus -- --only openclaw` | Yes (workspace skill + SOUL.md) |
+| **Codex CLI** | `npx skills add 88plug/caveman-plus -a codex` | Per-session: `/caveman` |
+| **Cursor** | `npx skills add 88plug/caveman-plus -a cursor` | Per-session by default; `--with-init` for an always-on rule file |
+| **Windsurf** | `npx skills add 88plug/caveman-plus -a windsurf` | Per-session by default; `--with-init` for an always-on rule file |
+| **Cline** | `npx skills add 88plug/caveman-plus -a cline` | Per-session by default; `--with-init` for an always-on rule file |
+| **GitHub Copilot** *(soft probe)* | `npx -y github:88plug/caveman-plus -- --only copilot --with-init` | Repo-wide instructions via `--with-init` |
+| **Continue** | `npx skills add 88plug/caveman-plus -a continue` | No — say `/caveman` |
+| **Kilo Code** | `npx skills add 88plug/caveman-plus -a kilo` | No |
+| **Roo Code** | `npx skills add 88plug/caveman-plus -a roo` | No |
+| **Augment Code** | `npx skills add 88plug/caveman-plus -a augment` | No |
+| **Aider Desk** | `npx skills add 88plug/caveman-plus -a aider-desk` | No |
+| **Sourcegraph Amp** | `npx skills add 88plug/caveman-plus -a amp` | No |
+| **IBM Bob** | `npx skills add 88plug/caveman-plus -a bob` | No |
+| **Crush** | `npx skills add 88plug/caveman-plus -a crush` | No |
+| **Devin (terminal)** | `npx skills add 88plug/caveman-plus -a devin` | No |
+| **Droid (Factory)** | `npx skills add 88plug/caveman-plus -a droid` | No |
+| **ForgeCode** | `npx skills add 88plug/caveman-plus -a forgecode` | No |
+| **Block Goose** | `npx skills add 88plug/caveman-plus -a goose` | No |
+| **iFlow CLI** | `npx skills add 88plug/caveman-plus -a iflow-cli` | No |
+| **Kiro CLI** | `npx skills add 88plug/caveman-plus -a kiro-cli` | No |
+| **Mistral Vibe** | `npx skills add 88plug/caveman-plus -a mistral-vibe` | No |
+| **OpenHands** | `npx skills add 88plug/caveman-plus -a openhands` | No |
+| **Qwen Code** | `npx skills add 88plug/caveman-plus -a qwen-code` | No |
+| **Atlassian Rovo Dev** | `npx skills add 88plug/caveman-plus -a rovodev` | No |
+| **Tabnine CLI** | `npx skills add 88plug/caveman-plus -a tabnine-cli` | No |
+| **Trae** | `npx skills add 88plug/caveman-plus -a trae` | No |
+| **Warp** | `npx skills add 88plug/caveman-plus -a warp` | No |
+| **Replit Agent** | `npx skills add 88plug/caveman-plus -a replit` | No |
+| **JetBrains Junie** *(soft probe)* | `npx skills add 88plug/caveman-plus -a junie` | No |
+| **Qoder** *(soft probe)* | `npx skills add 88plug/caveman-plus -a qoder` | No |
+| **Google Antigravity** *(soft probe)* | `npx skills add 88plug/caveman-plus -a antigravity` | No |
 
 "Soft probe" = installer won't auto-detect these without `--only <id>` because there's no reliable always-on signal (Copilot subscription state is auth-gated; the others have no CLI / config-dir-only). Pass the flag when you want them.
 
@@ -84,7 +84,7 @@ If you'd rather see exactly what runs:
 
 ```bash
 # Clone the repo
-git clone https://github.com/JuliusBrussee/caveman.git
+git clone https://github.com/88plug/caveman-plus.git
 cd caveman
 
 # Preview every command the installer would run
@@ -126,7 +126,7 @@ For agents without a hook system (Cursor, Windsurf, Cline, Copilot, and friends)
 node bin/install.js --with-init
 
 # Or pull the rule body straight in (manual)
-curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/src/rules/caveman-activate.md \
+curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/src/rules/caveman-activate.md \
   > .cursor/rules/caveman.mdc   # or .windsurf/rules/caveman.md, .clinerules/caveman.md, .github/copilot-instructions.md
 ```
 
@@ -162,7 +162,7 @@ Statusline should show `[CAVEMAN]` (orange) at the bottom of Claude Code. After 
 ## Uninstall
 
 ```bash
-npx -y github:JuliusBrussee/caveman -- --uninstall
+npx -y github:88plug/caveman-plus -- --uninstall
 ```
 
 What it removes:
@@ -189,7 +189,7 @@ Open your agent in this repo and say:
 
 Agent read repo. Agent run install. Caveman make agent talk less — agent first job is install caveman to talk less. Snake eat tail.
 
-Still broken? [Open an issue](https://github.com/JuliusBrussee/caveman/issues).
+Still broken? [Open an issue](https://github.com/88plug/caveman-plus/issues).
 
 **"I ran the installer but Claude Code isn't talking caveman."**
 
@@ -244,4 +244,4 @@ No telemetry. No analytics. The installer's own code makes no network calls. Net
 
 ---
 
-Stuck? Open an issue: <https://github.com/JuliusBrussee/caveman/issues>
+Stuck? Open an issue: <https://github.com/88plug/caveman-plus/issues>
