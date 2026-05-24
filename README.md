@@ -85,13 +85,13 @@ Pick your level of grunt — `lite` (drop filler), `full` (default caveman), `ul
 
 ### <img src="docs/assets/dancing-rock.svg" width="22" height="22" alt="rock"/> Like this trick? Now get whole agent — **caveman-code**
 
-This skill shrink what agent **say**. **[caveman-code](https://github.com/88plug/caveman-plus-code)** shrink **everything** — full terminal coding agent, caveman top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
+This skill shrink what agent **say**. **[caveman-code](https://github.com/JuliusBrussee/caveman-code)** shrink **everything** — full terminal coding agent, caveman top to bottom. **~2× fewer tokens than Codex** on identical tasks. 20+ providers · plan mode · autopilot goal loop · MIT.
 
 ```bash
 npm install -g @juliusbrussee/caveman-code
 ```
 
-[**▶ Try caveman-code now →**](https://github.com/88plug/caveman-plus-code) — *why use many token when whole agent save*
+[**▶ Try caveman-code now →**](https://github.com/JuliusBrussee/caveman-code) — *why use many token when whole agent save*
 
 </td></tr>
 </table>
@@ -216,7 +216,7 @@ Five tools. One philosophy: **agent do more with less**.
 | Repo | What |
 |------|------|
 | [**caveman**](https://github.com/88plug/caveman-plus) *(you here)* | Output compression — *why use many token when few do trick* |
-| [**caveman-code**](https://github.com/88plug/caveman-plus-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
+| [**caveman-code**](https://github.com/JuliusBrussee/caveman-code) | Whole terminal coding agent — *why use many token when whole agent can save* |
 | [**cavemem**](https://github.com/JuliusBrussee/cavemem) | Cross-agent memory — *why agent forget when agent can remember* |
 | [**cavekit**](https://github.com/JuliusBrussee/cavekit) | Spec-driven build loop — *why agent guess when agent can know* |
 | [**cavegemma**](https://github.com/JuliusBrussee/finetune-caveman) | Gemma 4 31B fine-tuned on caveman pairs — *why prompt every turn when weight remember* |
