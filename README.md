@@ -12,6 +12,7 @@
   <a href="https://github.com/88plug/caveman-plus/stargazers"><img src="https://img.shields.io/github/stars/88plug/caveman-plus?style=flat&color=yellow" alt="Stars"></a>
   <a href="https://github.com/88plug/caveman-plus/commits/main"><img src="https://img.shields.io/github/last-commit/88plug/caveman-plus?style=flat" alt="Last Commit"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/88plug/caveman-plus?style=flat" alt="License"></a>
+  <a href="https://deepwiki.com/88plug/caveman-plus"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 <p align="center">
