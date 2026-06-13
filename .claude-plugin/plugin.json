@@ -3,8 +3,9 @@
   "description": "Ultra-compressed communication mode. Cuts ~75% of tokens while keeping full technical accuracy by speaking like a caveman.",
   "author": {
     "name": "88plug",
-    "url": "https://github.com/88plug"
+    "email": "andrew@88plug.com"
   },
+  "license": "MIT",
   "hooks": {
     "SessionStart": [
       {
