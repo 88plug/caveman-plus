@@ -7,6 +7,7 @@
 Token-saving output mode for Claude Code and 30+ other AI coding agents: it makes the agent answer in compressed "caveman" prose, cutting roughly 75% of output tokens while keeping full technical accuracy.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)
+[![Docs](https://img.shields.io/badge/docs-online-2ea44f?style=flat)](https://88plug.github.io/caveman-plus/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat)](LICENSE)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-8A2BE2?style=flat)](https://github.com/88plug/claude-code-plugins)
 
