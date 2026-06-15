@@ -1,0 +1,17 @@
+{
+  "name": "caveman-plus",
+  "source": {
+    "source": "github",
+    "repo": "88plug/caveman-plus"
+  },
+  "description": "Ultra-compressed communication mode. Cuts ~75% of tokens while keeping full technical accuracy by speaking like a caveman.",
+  "category": "productivity",
+  "tags": [
+    "type:plugin",
+    "tokens",
+    "compression",
+    "output-style",
+    "caveman"
+  ],
+  "homepage": "https://github.com/88plug/caveman-plus"
+}
