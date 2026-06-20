@@ -4,6 +4,8 @@
 
 # caveman-plus
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/88plug/caveman-plus)
+
 Token-saving output mode for Claude Code and 30+ other AI coding agents: it makes the agent answer in compressed "caveman" prose, cutting roughly 75% of output tokens while keeping full technical accuracy.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)
