@@ -11,7 +11,17 @@
       "name": "caveman-plus",
       "description": "Talk like caveman. Cut ~75% tokens. Keep all technical accuracy.",
       "source": "./",
-      "category": "productivity"
+      "homepage": "https://github.com/88plug/caveman-plus",
+      "license": "FSL-1.1-ALv2",
+      "category": "productivity",
+      "tags": [
+        "type:plugin",
+        "token-compression",
+        "communication-mode",
+        "caveman",
+        "output-style",
+        "cost-saving"
+      ]
     }
   ]
 }

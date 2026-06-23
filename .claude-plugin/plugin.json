@@ -1,11 +1,38 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "caveman-plus",
+  "displayName": "Caveman Plus",
+  "version": "2026.6.23",
   "description": "Ultra-compressed communication mode. Cuts ~75% of tokens while keeping full technical accuracy by speaking like a caveman.",
   "author": {
     "name": "88plug",
     "email": "andrew@88plug.com"
   },
-  "license": "MIT",
+  "license": "FSL-1.1-ALv2",
+  "homepage": "https://github.com/88plug/caveman-plus",
+  "repository": "https://github.com/88plug/caveman-plus.git",
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anthropic",
+    "ai",
+    "llm",
+    "ai-agents",
+    "developer-tools",
+    "productivity",
+    "automation",
+    "cli",
+    "claude-code-plugin",
+    "claude-skills",
+    "token-compression",
+    "communication-mode",
+    "caveman",
+    "prompt-engineering",
+    "context-efficiency",
+    "terse",
+    "output-style",
+    "cost-saving"
+  ],
   "hooks": {
     "SessionStart": [
       {
@@ -13,7 +40,7 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/caveman-activate.js\"",
-            "timeout": 5,
+            "timeout": 15,
             "statusMessage": "Loading caveman mode..."
           }
         ]
@@ -25,7 +52,7 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/caveman-mode-tracker.js\"",
-            "timeout": 5,
+            "timeout": 10,
             "statusMessage": "Tracking caveman mode..."
           }
         ]

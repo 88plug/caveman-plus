@@ -1,16 +1,10 @@
-<div align="center">
-
-<img src="assets/dancing-rock.svg" width="96" alt="Caveman Plus dancing-rock logo" />
-
 # caveman-plus
 
 Token-saving output mode for Claude Code and 30+ other AI coding agents: it makes the agent answer in compressed "caveman" prose, cutting roughly 75% of output tokens while keeping full technical accuracy.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat)](LICENSE)
+[![License: FSL-1.1-ALv2](https://img.shields.io/badge/license-FSL--1.1--ALv2-blue?style=flat)](https://github.com/88plug/caveman-plus/blob/main/LICENSE.md)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-8A2BE2?style=flat)](https://github.com/88plug/claude-code-plugins)
-
-</div>
 
 ## Install
 
@@ -33,7 +27,7 @@ curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/install.sh
 irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex
 ```
 
-The script needs Node 18 or newer, takes about 30 seconds, skips agents you do not have, and is safe to re-run. Full matrix and per-agent flags are in [INSTALL.md](./INSTALL.md).
+The script needs Node 18 or newer, takes about 30 seconds, skips agents you do not have, and is safe to re-run. Full matrix and per-agent flags are in [INSTALL.md](https://github.com/88plug/caveman-plus/blob/main/INSTALL.md).
 
 ## Quickstart
 
@@ -53,8 +47,8 @@ becomes this, with the same fix:
 
 Same answer, far fewer tokens.
 
-> [!NOTE]
-> caveman-plus changes output tokens only. Reasoning and thinking tokens are untouched, so the model is not made less capable. The main wins are readability, speed, and lower output cost.
+!!! note
+    caveman-plus changes output tokens only. Reasoning and thinking tokens are untouched, so the model is not made less capable. The main wins are readability, speed, and lower output cost.
 
 ## What it does
 
@@ -117,7 +111,7 @@ In Claude Code, the statusline shows a badge like `[CAVEMAN] 12.4k` for lifetime
 - The stats command reads the Claude Code session log, counts tokens saved, and writes the number to the statusline.
 - The `caveman-compress` sub-skill rewrites memory files so each session starts with a smaller context, saving tokens on every session rather than one reply.
 
-Maintainer detail (hook architecture, file ownership, CI sync) lives in [CLAUDE.md](./CLAUDE.md).
+Maintainer detail (hook architecture, file ownership, CI sync) lives in [CLAUDE.md](https://github.com/88plug/caveman-plus/blob/main/CLAUDE.md).
 
 ## Benchmarks
 
@@ -131,22 +125,22 @@ Real token counts from the Claude API, averaging about 65% output reduction acro
 | Implement React error boundary | 87% |
 | Average (10 prompts) | 65% |
 
-Raw data and reproduction script are in [`benchmarks/`](./benchmarks/). A three-arm eval harness (baseline / terse / skill) lives in [`evals/`](./evals/); caveman is compared against an explicit "Answer concisely." instruction, not the verbose default, so the delta is honest.
+Raw data and reproduction script are in [`benchmarks/`](https://github.com/88plug/caveman-plus/tree/main/benchmarks). A three-arm eval harness (baseline / terse / skill) lives in [`evals/`](https://github.com/88plug/caveman-plus/tree/main/evals); caveman is compared against an explicit "Answer concisely." instruction, not the verbose default, so the delta is honest.
 
-> [!TIP]
-> `caveman-compress` cuts about 46% of input tokens from memory files on average, and that saving repeats every session. See receipts in [`benchmarks/`](./benchmarks/).
+!!! tip
+    `caveman-compress` cuts about 46% of input tokens from memory files on average, and that saving repeats every session. See receipts in [`benchmarks/`](https://github.com/88plug/caveman-plus/tree/main/benchmarks).
 
 ## Documentation
 
-- [INSTALL.md](./INSTALL.md) — full install matrix, all flags, per-agent detail
-- [CLAUDE.md](./CLAUDE.md) — maintainer guide (file ownership, hook architecture, CI)
-- [docs/](./docs/) — extra guides, including Windows install
+- [INSTALL.md](https://github.com/88plug/caveman-plus/blob/main/INSTALL.md) — full install matrix, all flags, per-agent detail
+- [CLAUDE.md](https://github.com/88plug/caveman-plus/blob/main/CLAUDE.md) — maintainer guide (file ownership, hook architecture, CI)
+- [Windows install](install-windows.md) — extra guides, including Windows install
 - [Issues](https://github.com/88plug/caveman-plus/issues) — bugs, features, questions
 
 ## Contributing
 
-Patches are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to send one.
+Patches are welcome. See [CONTRIBUTING.md](https://github.com/88plug/caveman-plus/blob/main/CONTRIBUTING.md) for how to send one.
 
 ## License
 
-[MIT](LICENSE). Fork of [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman); original by Julius Brussee.
+[FSL-1.1-ALv2](https://github.com/88plug/caveman-plus/blob/main/LICENSE.md). Fork of [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman); original by Julius Brussee.
