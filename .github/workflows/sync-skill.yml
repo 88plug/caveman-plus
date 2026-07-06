@@ -9,6 +9,10 @@ on:
       - agents/cavecrew-*.md
       - skills/caveman-compress/SKILL.md
       - skills/caveman-compress/scripts/**
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
 
 concurrency:
   group: sync-skill
@@ -16,11 +20,11 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.0
         with:
           ref: main
 
