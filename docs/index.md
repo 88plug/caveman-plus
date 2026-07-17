@@ -6,7 +6,7 @@ output tokens**, full technical accuracy kept.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)
 [![Docs](https://img.shields.io/badge/docs-online-2ea44f?style=flat)](https://88plug.github.io/caveman-plus/)
-[![License: FSL-1.1-ALv2](https://img.shields.io/badge/license-FSL--1.1--ALv2-blue?style=flat)](https://github.com/88plug/caveman-plus/blob/main/LICENSE.md)
+[![License: FSL-1.1-ALv2](https://img.shields.io/badge/license-FSL--1.1--ALv2-blue?style=flat)](https://github.com/88plug/caveman-plus/blob/main/LICENSE)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-8A2BE2?style=flat)](https://github.com/88plug/claude-code-plugins)
 
 ## Install
@@ -289,6 +289,6 @@ Patches welcome. See
 
 ## License
 
-[FSL-1.1-ALv2](https://github.com/88plug/caveman-plus/blob/main/LICENSE.md).
+[FSL-1.1-ALv2](https://github.com/88plug/caveman-plus/blob/main/LICENSE).
 Fork of [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman);
 original by Julius Brussee.

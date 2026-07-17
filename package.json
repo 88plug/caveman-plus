@@ -30,6 +30,6 @@
     "commands/",
     "dist/caveman.skill",
     "README.md",
-    "LICENSE.md"
+    "LICENSE"
   ]
 }
