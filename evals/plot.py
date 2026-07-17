@@ -15,8 +15,8 @@ import json
 import statistics
 from pathlib import Path
 
-import plotly.graph_objects as go
-import tiktoken
+import plotly.graph_objects as go  # type: ignore[reportMissingImports]
+import tiktoken  # type: ignore[reportMissingImports]
 
 ENCODING = tiktoken.get_encoding("o200k_base")
 SNAPSHOT = Path(__file__).parent / "snapshots" / "results.json"

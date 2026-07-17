@@ -20,7 +20,7 @@ import json
 import statistics
 from pathlib import Path
 
-import tiktoken
+import tiktoken  # type: ignore[reportMissingImports]
 
 ENCODING = tiktoken.get_encoding("o200k_base")
 SNAPSHOT = Path(__file__).parent / "snapshots" / "results.json"

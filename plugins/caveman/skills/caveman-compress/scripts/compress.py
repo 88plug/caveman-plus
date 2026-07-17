@@ -81,7 +81,7 @@ def call_claude(prompt: str) -> str:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if api_key:
         try:
-            import anthropic
+            import anthropic  # type: ignore[reportMissingImports]
 
             client = anthropic.Anthropic(api_key=api_key)
             msg = client.messages.create(

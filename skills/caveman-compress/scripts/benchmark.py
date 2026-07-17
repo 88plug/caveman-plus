@@ -7,10 +7,10 @@ try:
     from .validate import validate
 except ImportError:
     sys.path.insert(0, str(Path(__file__).parent))
-    from validate import validate
+    from validate import validate  # type: ignore[reportAttributeAccessIssue]
 
 try:
-    import tiktoken
+    import tiktoken  # type: ignore[reportMissingImports]
 
     _enc = tiktoken.get_encoding("o200k_base")
 except ImportError:

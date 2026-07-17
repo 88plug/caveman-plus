@@ -1,0 +1,28 @@
+{
+  "include": [
+    "plugins",
+    "skills",
+    "tests",
+    "benchmarks",
+    "evals",
+    ".ci",
+    "bin"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv",
+    "**/venv",
+    "**/site",
+    "**/build",
+    "**/dist",
+    "**/.git",
+    "**/.ruff_cache"
+  ],
+  "extraPaths": [
+    "skills/caveman-compress"
+  ],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "basic",
+  "reportMissingTypeStubs": false
+}

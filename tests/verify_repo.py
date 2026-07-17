@@ -59,8 +59,11 @@ def run(
     return result
 
 
-def read_json(path: Path) -> object:
-    return json.loads(path.read_text(encoding="utf-8"))
+def read_json(path: Path) -> dict:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise CheckFailure(f"{path} did not contain a JSON object")
+    return data
 
 
 def shell_path(path: Path) -> str:
@@ -69,7 +72,7 @@ def shell_path(path: Path) -> str:
 
 def _frontmatter_description(path: Path) -> str:
     lines = path.read_text(encoding="utf-8").splitlines()
-    ensure(lines and lines[0] == "---", f"{path} missing YAML frontmatter")
+    ensure(bool(lines) and lines[0] == "---", f"{path} missing YAML frontmatter")
 
     description_lines: list[str] = []
     collecting = False
@@ -240,7 +243,7 @@ def verify_compress_fixtures() -> None:
     _, detect, validate = load_compress_modules()
 
     fixtures = sorted((ROOT / "tests/caveman-compress").glob("*.original.md"))
-    ensure(fixtures, "No caveman-compress fixtures found")
+    ensure(bool(fixtures), "No caveman-compress fixtures found")
 
     for original in fixtures:
         compressed = original.with_name(original.name.replace(".original.md", ".md"))

@@ -11,7 +11,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-import anthropic
+import anthropic  # type: ignore[reportMissingImports]
 
 # Load .env.local from repo root if it exists
 _env_file = Path(__file__).parent.parent / ".env.local"
