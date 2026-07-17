@@ -277,9 +277,9 @@ test('opencode plugin handles /caveman ultra and stop caveman via tui.prompt.app
     assert.equal(fs.existsSync(flagPath), false, 'flag should be deleted after deactivation');
     assert.equal(out2, undefined, 'no reinforcement when flag absent');
 
-    // session.created writes default mode
+    // session.created writes default mode (88plug edition: full-plus)
     await handlers['session.created']();
-    assert.equal(fs.readFileSync(flagPath, 'utf8'), 'full');
+    assert.equal(fs.readFileSync(flagPath, 'utf8'), 'full-plus');
   } finally {
     fs.rmSync(xdg, { recursive: true, force: true });
     fs.rmSync(shimDir, { recursive: true, force: true });

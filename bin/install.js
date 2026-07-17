@@ -798,7 +798,7 @@ function installMcpShrink(ctx) {
   const help = captureSpawn('claude', ['mcp', '--help']);
   if (help.status !== 0) {
     note("    'claude mcp add' not available on this CLI. Add the snippet from");
-    note('    src/hooks/README.md to your Claude Code MCP config manually.');
+    note('    src/mcp-servers/caveman-shrink/README.md to your Claude Code MCP config manually.');
     return { kind: 'skip', why: 'manual config required' };
   }
   const r = runSpawn('claude', ['mcp', 'add', 'caveman-shrink', '--', 'npx', '-y', MCP_SHRINK_PKG], null, opts.dryRun);

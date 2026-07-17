@@ -171,7 +171,9 @@ class HookScriptTests(unittest.TestCase):
             result = self.run_cmd(["node", "src/hooks/caveman-activate.js"], home)
 
             self.assertNotIn("STATUSLINE SETUP NEEDED", result.stdout)
-            self.assertEqual((claude_dir / ".caveman-active").read_text(), "full")
+            self.assertEqual(
+                (claude_dir / ".caveman-active").read_text(), "full-plus"
+            )
 
 
 if __name__ == "__main__":

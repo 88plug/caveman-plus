@@ -32,6 +32,7 @@
     "output-style",
     "cost-saving"
   ],
+  "_note": "caveman-shrink (src/mcp-servers/caveman-shrink/) is optional MCP middleware, not a standalone server — it requires an upstream command and cannot be declared as mcpServers here. Install via `npx caveman` (default --with-mcp-shrink) or wrap manually: command=node args=[\"${CLAUDE_PLUGIN_ROOT}/src/mcp-servers/caveman-shrink/index.js\", \"<upstream>\", \"...\"]. See src/mcp-servers/caveman-shrink/README.md.",
   "hooks": {
     "SessionStart": [
       {

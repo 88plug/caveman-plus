@@ -180,6 +180,8 @@ def verify_manifests_and_syntax() -> None:
     run(["node", "--check", "src/hooks/caveman-mode-tracker.js"])
     run(["node", "--check", "bin/install.js"])
     run(["node", "--check", "bin/lib/settings.js"])
+    run(["node", "--check", "src/mcp-servers/caveman-shrink/index.js"])
+    run(["node", "--check", "src/mcp-servers/caveman-shrink/compress.js"])
     run(["bash", "-n", "src/hooks/install.sh"])
     run(["bash", "-n", "src/hooks/uninstall.sh"])
     run(["bash", "-n", "src/hooks/caveman-statusline.sh"])
@@ -190,6 +192,33 @@ def verify_manifests_and_syntax() -> None:
     ensure("caveman-config.js" in install_sh, "install.sh missing caveman-config.js")
     ensure(
         "caveman-config.js" in uninstall_sh, "uninstall.sh missing caveman-config.js"
+    )
+
+    # caveman-shrink is optional middleware (needs an upstream), not a plugin
+    # mcpServers entry — plugin.json must document that, not auto-wire it.
+    plugin_manifest = read_json(ROOT / ".claude-plugin/plugin.json")
+    ensure(
+        "mcpServers" not in plugin_manifest,
+        "plugin.json must not declare mcpServers for caveman-shrink middleware",
+    )
+    note = plugin_manifest.get("_note", "")
+    ensure(
+        isinstance(note, str) and "caveman-shrink" in note,
+        "plugin.json missing _note documenting optional caveman-shrink middleware",
+    )
+    ensure(
+        (ROOT / "src/mcp-servers/caveman-shrink/compress.js").exists(),
+        "src/mcp-servers/caveman-shrink/compress.js missing",
+    )
+    ensure(
+        (ROOT / "src/mcp-servers/caveman-shrink/index.js").exists(),
+        "src/mcp-servers/caveman-shrink/index.js missing",
+    )
+    # install.js must point users at the shrink README when claude mcp is unavailable
+    install_js = (ROOT / "bin/install.js").read_text(encoding="utf-8")
+    ensure(
+        "src/mcp-servers/caveman-shrink/README.md" in install_js,
+        "bin/install.js must document caveman-shrink README path for manual wiring",
     )
 
     print("JSON manifests and JS/bash syntax OK")
@@ -352,8 +381,8 @@ def verify_hook_install_flow() -> None:
             "activation should stay quiet when custom statusline exists",
         )
         ensure(
-            (claude_dir / ".caveman-active").read_text(encoding="utf-8") == "full",
-            "activation flag should default to full",
+            (claude_dir / ".caveman-active").read_text(encoding="utf-8") == "full-plus",
+            "activation flag should default to full-plus (88plug edition)",
         )
 
         # Test configurable default mode via CAVEMAN_DEFAULT_MODE env var

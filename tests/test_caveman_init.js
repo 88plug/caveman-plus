@@ -11,6 +11,15 @@ const { execFileSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..');
 const INIT = path.join(ROOT, 'src', 'tools', 'caveman-init.js');
 
+// Isolate HOME so a real ~/.openclaw/workspace on the developer machine
+// does not inflate skip/add counts (openclaw is a global target).
+function runInit(tmp, args = []) {
+  return execFileSync(process.execPath, [INIT, tmp, ...args], {
+    encoding: 'utf8',
+    env: { ...process.env, HOME: tmp, USERPROFILE: tmp },
+  });
+}
+
 let passed = 0;
 let failed = 0;
 
@@ -31,7 +40,7 @@ function test(name, fn) {
 console.log('caveman-init tests\n');
 
 test('greenfield: creates all rule files with proper frontmatter', (tmp) => {
-  execFileSync(process.execPath, [INIT, tmp], { encoding: 'utf8' });
+  runInit(tmp);
   const cursor = fs.readFileSync(path.join(tmp, '.cursor/rules/caveman.mdc'), 'utf8');
   assert.match(cursor, /alwaysApply: true/);
   assert.match(cursor, /Respond terse like smart caveman/);
@@ -46,15 +55,17 @@ test('greenfield: creates all rule files with proper frontmatter', (tmp) => {
 });
 
 test('idempotent: re-running on a clean install skips all', (tmp) => {
-  execFileSync(process.execPath, [INIT, tmp], { encoding: 'utf8' });
-  const out = execFileSync(process.execPath, [INIT, tmp], { encoding: 'utf8' });
-  assert.match(out, /5 skipped/);
+  runInit(tmp);
+  const out = runInit(tmp);
+  // Repo-local targets + openclaw (workspace missing under isolated HOME) all skipped.
+  assert.match(out, /0 added/);
+  assert.match(out, /[1-9]\d* skipped/);
   assert.doesNotMatch(out, /[1-9]\d* added/);
 });
 
 test('append mode: existing AGENTS.md gets caveman appended (not replaced)', (tmp) => {
   fs.writeFileSync(path.join(tmp, 'AGENTS.md'), '# My project\n\nDo not delete me.\n');
-  execFileSync(process.execPath, [INIT, tmp], { encoding: 'utf8' });
+  runInit(tmp);
   const agents = fs.readFileSync(path.join(tmp, 'AGENTS.md'), 'utf8');
   assert.match(agents, /Do not delete me/);
   assert.match(agents, /Respond terse like smart caveman/);
@@ -64,7 +75,7 @@ test('skip mode: existing .cursor rule is not overwritten without --force', (tmp
   const dir = path.join(tmp, '.cursor/rules');
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'caveman.mdc'), '# original\nDo not delete me.\n');
-  const out = execFileSync(process.execPath, [INIT, tmp], { encoding: 'utf8' });
+  const out = runInit(tmp);
   assert.match(out, /\? .*\.cursor\/rules\/caveman\.mdc/);
   const after = fs.readFileSync(path.join(dir, 'caveman.mdc'), 'utf8');
   assert.strictEqual(after, '# original\nDo not delete me.\n');
@@ -74,16 +85,17 @@ test('--force overwrites existing rule files', (tmp) => {
   const dir = path.join(tmp, '.cursor/rules');
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'caveman.mdc'), '# original\n');
-  execFileSync(process.execPath, [INIT, tmp, '--force'], { encoding: 'utf8' });
+  runInit(tmp, ['--force']);
   const after = fs.readFileSync(path.join(dir, 'caveman.mdc'), 'utf8');
   assert.match(after, /alwaysApply: true/);
   assert.match(after, /Respond terse/);
 });
 
 test('--dry-run: announces but writes nothing', (tmp) => {
-  const out = execFileSync(process.execPath, [INIT, tmp, '--dry-run'], { encoding: 'utf8' });
+  const out = runInit(tmp, ['--dry-run']);
   assert.match(out, /\(dry run\)/);
-  assert.match(out, /5 added/);
+  // Repo-local targets announced as added; openclaw may would-add or skip.
+  assert.match(out, /[1-9]\d* added/);
   assert.ok(!fs.existsSync(path.join(tmp, '.cursor')));
   assert.ok(!fs.existsSync(path.join(tmp, '.windsurf')));
   assert.ok(!fs.existsSync(path.join(tmp, '.clinerules')));
@@ -92,7 +104,7 @@ test('--dry-run: announces but writes nothing', (tmp) => {
 });
 
 test('--only filters to one target', (tmp) => {
-  const out = execFileSync(process.execPath, [INIT, tmp, '--only', 'cline'], { encoding: 'utf8' });
+  const out = runInit(tmp, ['--only', 'cline']);
   assert.match(out, /1 added/);
   assert.ok(fs.existsSync(path.join(tmp, '.clinerules/caveman.md')));
   assert.ok(!fs.existsSync(path.join(tmp, '.cursor')));
@@ -104,7 +116,7 @@ test('detects sentinel and skips files that already have caveman content', (tmp)
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'caveman.md'),
     '# Existing\n\nRespond terse like smart caveman. Hello.\n');
-  const out = execFileSync(process.execPath, [INIT, tmp, '--only', 'cline'], { encoding: 'utf8' });
+  const out = runInit(tmp, ['--only', 'cline']);
   assert.match(out, /skipped-already-installed/);
 });
 

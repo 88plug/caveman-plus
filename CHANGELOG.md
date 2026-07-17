@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026.7.17
+
+- Document optional `caveman-shrink` MCP middleware in `.claude-plugin/plugin.json` `_note` (not auto-wired as `mcpServers` — requires an upstream).
+- Smoke + verify: load `compress.js`, syntax-check shrink entrypoints, assert middleware exits 2 without upstream.
+- Fix `bin/install.js` manual-config pointer to `src/mcp-servers/caveman-shrink/README.md`.
+- Tests: expect default mode `full-plus` (88plug); isolate `caveman-init` HOME so openclaw workspace does not skew counts.
+
 ## 2026.6.23
 
 - 88plug compliance pass: relicensed to FSL-1.1-ALv2 (`LICENSE.md`, manifest, README, docs badges).
