@@ -8,7 +8,7 @@
 //
 // Distribution:
 //   Local clone: node bin/install.js [flags]
-//   curl|bash:   delegated from install.sh shim → npx -y github:JuliusBrussee/caveman -- [flags]
+//   curl|bash:   delegated from install.sh shim → npx -y github:88plug/caveman-plus -- [flags]
 //   Windows:     pwsh install.ps1 [flags] → same npx delegation
 //
 // Pure stdlib, zero npm runtime deps.
@@ -24,7 +24,7 @@ const readline = require('readline');
 const SETTINGS = require('./lib/settings');
 const OPENCLAW = require('./lib/openclaw');
 
-const REPO = 'JuliusBrussee/caveman';
+const REPO = '88plug/caveman-plus';
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/main`;
 const HOOKS_REMOTE = `${RAW_BASE}/src/hooks`;
 const INIT_SCRIPT_URL = `${RAW_BASE}/src/tools/caveman-init.js`;
@@ -395,7 +395,7 @@ async function installClaude(ctx) {
     results.skipped.push(['claude', 'plugin already installed']);
   } else {
     const r1 = runSpawn('claude', ['plugin', 'marketplace', 'add', REPO], null, opts.dryRun);
-    const r2 = runSpawn('claude', ['plugin', 'install', 'caveman@caveman'], null, opts.dryRun);
+    const r2 = runSpawn('claude', ['plugin', 'install', 'caveman-plus@caveman-plus'], null, opts.dryRun);
     if ((r1.status || 0) === 0 && (r2.status || 0) === 0) results.installed.push('claude');
     else results.failed.push(['claude', 'claude plugin install failed']);
   }
@@ -905,7 +905,7 @@ function uninstall(ctx) {
   if (hasCmd('claude')) {
     const probe = captureSpawn('claude', ['plugin', 'list']);
     if (probe.status === 0 && /caveman/i.test(probe.stdout || '')) {
-      const r = runSpawn('claude', ['plugin', 'uninstall', 'caveman@caveman'], null, opts.dryRun);
+      const r = runSpawn('claude', ['plugin', 'uninstall', 'caveman-plus@caveman-plus'], null, opts.dryRun);
       if ((r.status || 0) === 0) ok('  removed claude plugin');
     } else {
       note('  claude plugin not installed — skipping');
@@ -923,7 +923,7 @@ function uninstall(ctx) {
   if (hasCmd('gemini')) {
     const probe = captureSpawn('gemini', ['extensions', 'list']);
     if (probe.status === 0 && /caveman/i.test(probe.stdout || '')) {
-      runSpawn('gemini', ['extensions', 'uninstall', 'caveman'], null, opts.dryRun);
+      runSpawn('gemini', ['extensions', 'uninstall', 'caveman-plus'], null, opts.dryRun);
     } else {
       note('  gemini extension not installed — skipping');
     }
@@ -1066,7 +1066,7 @@ function printHelp() {
   process.stdout.write(`caveman installer — detects your agents and installs caveman for each one.
 
 USAGE
-  npx -y github:JuliusBrussee/caveman -- [flags]
+  npx -y github:88plug/caveman-plus -- [flags]
   node bin/install.js [flags]
   bash install.sh [flags]              # shim → npx
   pwsh install.ps1 [flags]             # shim → npx
@@ -1097,10 +1097,10 @@ FLAGS
   -h, --help            Show this help.
 
 EXAMPLES
-  npx -y github:JuliusBrussee/caveman                        # default install
-  npx -y github:JuliusBrussee/caveman -- --all               # all the trimmings
-  npx -y github:JuliusBrussee/caveman -- --only claude --no-mcp-shrink
-  npx -y github:JuliusBrussee/caveman -- --uninstall
+  npx -y github:88plug/caveman-plus                        # default install
+  npx -y github:88plug/caveman-plus -- --all               # all the trimmings
+  npx -y github:88plug/caveman-plus -- --only claude --no-mcp-shrink
+  npx -y github:88plug/caveman-plus -- --uninstall
 
   Issues: https://github.com/${REPO}/issues
 `);
