@@ -14,15 +14,15 @@ output tokens**, full technical accuracy kept.
 ### Claude Code plugin (recommended)
 
 ```bash
-claude plugin marketplace add 88plug/caveman-plus
-claude plugin install caveman-plus@caveman-plus
+claude plugin marketplace add 88plug/claude-code-plugins
+claude plugin install caveman-plus@88plug
 ```
 
 Or inside Claude Code:
 
 ```text
-/plugin marketplace add 88plug/caveman-plus
-/plugin install caveman-plus@caveman-plus
+/plugin marketplace add 88plug/claude-code-plugins
+/plugin install caveman-plus@88plug
 ```
 
 ### One-liner for every agent on the machine
@@ -57,7 +57,7 @@ a single agent:
 
 | Agent | Command | Auto-activates? |
 | --- | --- | :-: |
-| **Claude Code** | `claude plugin marketplace add 88plug/caveman-plus && claude plugin install caveman-plus@caveman-plus` | Yes |
+| **Claude Code** | `claude plugin marketplace add 88plug/claude-code-plugins && claude plugin install caveman-plus@88plug` | Yes |
 | **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` | Yes |
 | **Codex CLI** | `npx skills add 88plug/caveman-plus -a codex` | Per-session `/caveman` |
 | **Cursor** | `npx skills add 88plug/caveman-plus -a cursor` | Optional `--with-init` |

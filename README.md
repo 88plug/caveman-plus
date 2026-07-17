@@ -22,8 +22,8 @@ output tokens**, full technical accuracy kept.
 ### Claude Code plugin (recommended)
 
 ```bash
-claude plugin marketplace add 88plug/caveman-plus
-claude plugin install caveman-plus@caveman-plus
+claude plugin marketplace add 88plug/claude-code-plugins
+claude plugin install caveman-plus@88plug
 ```
 
 ### One-liner for every agent on the machine
@@ -44,9 +44,13 @@ Full matrix and per-agent flags: [INSTALL.md](./INSTALL.md). Docs site:
 
 ## Multi-agent install
 
+Claude Code loads the **repo-root** plugin (`.claude-plugin/`). The `plugins/caveman/`
+tree is a **Codex / multi-agent distribution mirror** (CI-synced skills) — not a second
+Claude marketplace package.
+
 | Agent | Command | Auto-activates? |
 | --- | --- | :-: |
-| **Claude Code** | `claude plugin marketplace add 88plug/caveman-plus && claude plugin install caveman-plus@caveman-plus` | Yes |
+| **Claude Code** | `claude plugin marketplace add 88plug/claude-code-plugins && claude plugin install caveman-plus@88plug` | Yes |
 | **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` | Yes |
 | **Codex CLI** | `npx skills add 88plug/caveman-plus -a codex` | Per-session `/caveman` |
 | **Cursor** | `npx skills add 88plug/caveman-plus -a cursor` | Optional `--with-init` |

@@ -37,7 +37,7 @@ If you want to install for one agent (or want to know exactly what command runs 
 
 | Agent | Install command | Auto-activates? |
 |---|---|:-:|
-| **Claude Code** | `claude plugin marketplace add 88plug/caveman-plus && claude plugin install caveman-plus@caveman-plus` | Yes |
+| **Claude Code** | `claude plugin marketplace add 88plug/claude-code-plugins && claude plugin install caveman-plus@88plug` | Yes |
 | **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` | Yes |
 | **opencode** | `node bin/install.js --only opencode` *(or `npx -y github:88plug/caveman-plus -- --only opencode`)* | Yes (plugin + AGENTS.md) |
 | **OpenClaw** | `npx -y github:88plug/caveman-plus -- --only openclaw` | Yes (workspace skill + SOUL.md) |
