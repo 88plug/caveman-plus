@@ -34,9 +34,9 @@ Source: `mode_matrix_20260420_074817.json`
 - `full`: `+25.1%`, `0.00`
 - `full-plus`: `+44.1%`, `-0.20`
 - `ultra`: `+31.0%`, `-0.20`
-- `mello-lite`: `+11.0%`, `-0.20`
-- `mello`: `+32.0%`, `-0.20`
-- `mello-ultra`: `+12.7%`, `0.20`
+- `wenyan-lite`: `+11.0%`, `-0.20`
+- `wenyan`: `+32.0%`, `-0.20`
+- `wenyan-ultra`: `+12.7%`, `0.20`
 
 Winner: `full-plus`
 

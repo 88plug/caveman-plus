@@ -39,9 +39,9 @@ GENERAL_MODE_ORDER = [
     "full",
     "full-plus",
     "ultra",
-    "mello-lite",
-    "mello",
-    "mello-ultra",
+    "wenyan-lite",
+    "wenyan",
+    "wenyan-ultra",
 ]
 SPECIAL_MODE_ORDER = {
     "dialogue": ["off", "full", "full-plus"],
@@ -180,21 +180,15 @@ def ensure_runtime(validate_only: bool = False) -> None:
 
 
 def mode_label(mode: str) -> str:
-    if mode == "mello":
-        return "mello / mello-full"
+    if mode == "wenyan":
+        return "wenyan / wenyan-full"
     return mode
 
 
 def normalize_benchmark_mode(mode: str) -> str:
     raw = str(mode or "").strip().lower()
-    if raw == "mello-full":
-        return "mello"
-    if raw == "wenyan-lite":
-        return "mello-lite"
-    if raw in {"wenyan", "wenyan-full"}:
-        return "mello"
-    if raw == "wenyan-ultra":
-        return "mello-ultra"
+    if raw == "wenyan-full":
+        return "wenyan"
     return raw
 
 

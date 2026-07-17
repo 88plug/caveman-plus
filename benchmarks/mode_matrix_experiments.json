@@ -2,8 +2,8 @@
   "version": 1,
   "families": {
     "general": {
-      "description": "General answer-style benchmark for off, lite, full, full-plus, ultra, and mello variants.",
-      "modes": ["off", "lite", "full", "full-plus", "ultra", "mello-lite", "mello", "mello-ultra"],
+      "description": "General answer-style benchmark for off, lite, full, full-plus, ultra, and wenyan variants.",
+      "modes": ["off", "lite", "full", "full-plus", "ultra", "wenyan-lite", "wenyan", "wenyan-ultra"],
       "experiments": [
         {
           "id": "react-rerender",
