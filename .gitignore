@@ -13,6 +13,7 @@ context/refs/research-brief-caveman-code-efficiency.md
 # Build artifacts
 dist/*
 !dist/caveman.skill
+site/
 
 # real eval/corpus data — never commit
 eval_real_corpus.json
