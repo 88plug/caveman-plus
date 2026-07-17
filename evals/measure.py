@@ -61,12 +61,12 @@ def main() -> None:
     print(
         f"_Model: {meta.get('model', '?')} · CLI: {meta.get('claude_cli_version', '?')}_"
     )
-    print(f"_Tokenizer: tiktoken o200k_base (approximation of Claude's BPE)_")
+    print("_Tokenizer: tiktoken o200k_base (approximation of Claude's BPE)_")
     print(
         f"_n = {meta.get('n_prompts', len(baseline_tokens))} prompts, single run per arm_"
     )
     print()
-    print(f"**Reference arms (no skill):**")
+    print("**Reference arms (no skill):**")
     print(f"- baseline (no system prompt): {sum(baseline_tokens)} tokens total")
     print(
         f"- terse control (`Answer concisely.`): {sum(terse_tokens)} tokens total "

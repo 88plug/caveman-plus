@@ -28,7 +28,11 @@ SOURCE_CODEX_HOME = Path(
 SOURCE_AUTH_PATH = SOURCE_CODEX_HOME / "auth.json"
 ACTIVATE_HOOK = REPO_DIR / "hooks" / "codex-caveman-activate.js"
 TRACKER_HOOK = REPO_DIR / "hooks" / "codex-caveman-mode-tracker.js"
-HOOK_SUPPORT_FILES = ["caveman-config.js", "codex-caveman-activate.js", "codex-caveman-mode-tracker.js"]
+HOOK_SUPPORT_FILES = [
+    "caveman-config.js",
+    "codex-caveman-activate.js",
+    "codex-caveman-mode-tracker.js",
+]
 GENERAL_MODE_ORDER = [
     "off",
     "lite",
@@ -119,7 +123,9 @@ def validate_experiments(data: dict[str, Any]) -> None:
             if family == "compress":
                 rel = experiment.get("original_path")
                 if not rel:
-                    raise ValueError(f"{family}:{experiment['id']} missing original_path")
+                    raise ValueError(
+                        f"{family}:{experiment['id']} missing original_path"
+                    )
                 if not (REPO_DIR / rel).exists():
                     raise ValueError(f"{family}:{experiment['id']} missing file {rel}")
                 compressed = (REPO_DIR / rel).with_name(
@@ -132,7 +138,9 @@ def validate_experiments(data: dict[str, Any]) -> None:
             elif family == "compress":
                 rel = experiment.get("original_path")
                 if not rel:
-                    raise ValueError(f"{family}:{experiment['id']} missing original_path")
+                    raise ValueError(
+                        f"{family}:{experiment['id']} missing original_path"
+                    )
                 if not (REPO_DIR / rel).exists():
                     raise ValueError(f"{family}:{experiment['id']} missing file {rel}")
                 compressed = (REPO_DIR / rel).with_name(
@@ -145,7 +153,9 @@ def validate_experiments(data: dict[str, Any]) -> None:
             elif family == "dialogue":
                 turns = experiment.get("turns", [])
                 if len(turns) < 3:
-                    raise ValueError(f"{family}:{experiment['id']} needs at least 3 turns")
+                    raise ValueError(
+                        f"{family}:{experiment['id']} needs at least 3 turns"
+                    )
             else:
                 if not experiment.get("prompt"):
                     raise ValueError(f"{family}:{experiment['id']} missing prompt")
@@ -516,7 +526,9 @@ def storage_probe_prompt(body: str) -> str:
     return STORAGE_PROBE_TEMPLATE.format(body=body)
 
 
-def measure_storage_tokens(text: str, *, model: str, baseline_input_tokens: int) -> tuple[int, dict[str, int]]:
+def measure_storage_tokens(
+    text: str, *, model: str, baseline_input_tokens: int
+) -> tuple[int, dict[str, int]]:
     response = run_codex_exec(
         storage_probe_prompt(text),
         model=model,
@@ -534,7 +546,9 @@ def general_mode_prompt(experiment: dict[str, Any], mode: str) -> str:
     return experiment["prompt"]
 
 
-def dialogue_turn_prompt(turns: list[str], history: list[dict[str, str]], turn_index: int) -> str:
+def dialogue_turn_prompt(
+    turns: list[str], history: list[dict[str, str]], turn_index: int
+) -> str:
     current = turns[turn_index]
     if not history:
         return current
@@ -625,14 +639,17 @@ def run_generation_family(
                 "input_tokens": outputs[mode]["input_tokens"],
                 "cached_input_tokens": outputs[mode]["cached_input_tokens"],
                 "output_tokens": outputs[mode]["output_tokens"],
-                "total_tokens": outputs[mode]["input_tokens"] + outputs[mode]["output_tokens"],
+                "total_tokens": outputs[mode]["input_tokens"]
+                + outputs[mode]["output_tokens"],
                 "output_savings_vs_off": (
                     1 - outputs[mode]["output_tokens"] / off_output_tokens
                     if off_output_tokens
                     else 0.0
                 ),
                 "total_savings_vs_off": (
-                    1 - (outputs[mode]["input_tokens"] + outputs[mode]["output_tokens"]) / off_total
+                    1
+                    - (outputs[mode]["input_tokens"] + outputs[mode]["output_tokens"])
+                    / off_total
                     if off_total
                     else 0.0
                 ),
@@ -641,7 +658,9 @@ def run_generation_family(
             if judged:
                 row["judge"] = judged[mode]
                 row["quality_score"] = judged[mode]["overall"]
-                row["quality_loss_vs_off"] = judged["off"]["overall"] - judged[mode]["overall"]
+                row["quality_loss_vs_off"] = (
+                    judged["off"]["overall"] - judged[mode]["overall"]
+                )
             rows.append(row)
 
     return {"family": family_name, "modes": modes, "rows": rows}
@@ -679,14 +698,16 @@ def run_dialogue_family(
                     hooks_enabled=(mode != "off"),
                     default_mode=(mode if mode != "off" else None),
                 )
-                turn_rows.append({
-                    "turn_index": turn_index,
-                    "prompt": prompt,
-                    "input_tokens": result["input_tokens"],
-                    "cached_input_tokens": result["cached_input_tokens"],
-                    "output_tokens": result["output_tokens"],
-                    "text": result["text"],
-                })
+                turn_rows.append(
+                    {
+                        "turn_index": turn_index,
+                        "prompt": prompt,
+                        "input_tokens": result["input_tokens"],
+                        "cached_input_tokens": result["cached_input_tokens"],
+                        "output_tokens": result["output_tokens"],
+                        "text": result["text"],
+                    }
+                )
                 history.append({"role": "user", "text": turns[turn_index - 1]})
                 history.append({"role": "assistant", "text": result["text"]})
             outputs[mode] = turn_rows
@@ -700,18 +721,24 @@ def run_dialogue_family(
                     family="dialogue",
                     experiment={
                         "id": experiment["id"],
-                        "prompt": "\n\n".join(f"Turn {i+1}: {turn}" for i, turn in enumerate(turns)),
+                        "prompt": "\n\n".join(
+                            f"Turn {i + 1}: {turn}" for i, turn in enumerate(turns)
+                        ),
                         "rubric": experiment["rubric"],
                     },
                     output_text=final_outputs[mode],
                     reference_text=(final_outputs["off"] if mode != "off" else None),
                 )
 
-        off_total = sum(row["input_tokens"] + row["output_tokens"] for row in outputs["off"])
+        off_total = sum(
+            row["input_tokens"] + row["output_tokens"] for row in outputs["off"]
+        )
         off_output = sum(row["output_tokens"] for row in outputs["off"])
 
         for mode in modes:
-            total_tokens = sum(row["input_tokens"] + row["output_tokens"] for row in outputs[mode])
+            total_tokens = sum(
+                row["input_tokens"] + row["output_tokens"] for row in outputs[mode]
+            )
             output_tokens = sum(row["output_tokens"] for row in outputs[mode])
             row = {
                 "family": "dialogue",
@@ -721,13 +748,19 @@ def run_dialogue_family(
                 "final_text": final_outputs[mode],
                 "output_tokens": output_tokens,
                 "total_tokens": total_tokens,
-                "output_savings_vs_off": (1 - output_tokens / off_output) if off_output else 0.0,
-                "total_savings_vs_off": (1 - total_tokens / off_total) if off_total else 0.0,
+                "output_savings_vs_off": (1 - output_tokens / off_output)
+                if off_output
+                else 0.0,
+                "total_savings_vs_off": (1 - total_tokens / off_total)
+                if off_total
+                else 0.0,
             }
             if judged:
                 row["judge"] = judged[mode]
                 row["quality_score"] = judged[mode]["overall"]
-                row["quality_loss_vs_off"] = judged["off"]["overall"] - judged[mode]["overall"]
+                row["quality_loss_vs_off"] = (
+                    judged["off"]["overall"] - judged[mode]["overall"]
+                )
             rows.append(row)
 
     return {"family": "dialogue", "modes": modes, "rows": rows}
@@ -803,7 +836,9 @@ def run_compress_family(
                 output_text=compressed_text,
                 validator_summary=validation,
             )
-            penalty = min(3, 2 * len(validation["errors"]) + len(validation["warnings"]))
+            penalty = min(
+                3, 2 * len(validation["errors"]) + len(validation["warnings"])
+            )
             adjusted = max(0, judge["overall"] - penalty)
             row["judge"] = judge
             row["quality_score"] = adjusted
@@ -835,8 +870,14 @@ def summarize_family(result: dict[str, Any]) -> dict[str, Any]:
         else:
             savings_key = "output_savings_vs_off"
         savings = [float(row[savings_key]) for row in mode_rows if savings_key in row]
-        quality = [float(row["quality_score"]) for row in mode_rows if "quality_score" in row]
-        loss = [float(row["quality_loss_vs_off"]) for row in mode_rows if "quality_loss_vs_off" in row]
+        quality = [
+            float(row["quality_score"]) for row in mode_rows if "quality_score" in row
+        ]
+        loss = [
+            float(row["quality_loss_vs_off"])
+            for row in mode_rows
+            if "quality_loss_vs_off" in row
+        ]
 
         summary = {
             "mode": mode,
@@ -952,12 +993,16 @@ def main() -> None:
         choices=["all", "general", "dialogue", "commit", "review", "compress"],
         help="Family to run",
     )
-    parser.add_argument("--model", default=os.environ.get("CAVEMAN_BENCH_MODEL", DEFAULT_MODEL))
+    parser.add_argument(
+        "--model", default=os.environ.get("CAVEMAN_BENCH_MODEL", DEFAULT_MODEL)
+    )
     parser.add_argument(
         "--judge-model",
         default=os.environ.get("CAVEMAN_BENCH_JUDGE_MODEL", DEFAULT_JUDGE_MODEL),
     )
-    parser.add_argument("--dry-run", action="store_true", help="Validate config, no Codex runs")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Validate config, no Codex runs"
+    )
     parser.add_argument(
         "--validate-only",
         action="store_true",
@@ -1026,7 +1071,9 @@ def main() -> None:
             allowed = set(family["modes"])
             missing = [mode for mode in requested_modes if mode not in allowed]
             if missing:
-                raise ValueError(f"{family_name} does not support mode(s): {', '.join(missing)}")
+                raise ValueError(
+                    f"{family_name} does not support mode(s): {', '.join(missing)}"
+                )
             family["modes"] = requested_modes
         if family_name == "compress":
             result = run_compress_family(
@@ -1052,7 +1099,9 @@ def main() -> None:
             )
         summarized = summarize_family(result)
         payload["families"][family_name] = summarized
-        markdown_sections.append(markdown_summary(summarized, skip_judge=args.skip_judge))
+        markdown_sections.append(
+            markdown_summary(summarized, skip_judge=args.skip_judge)
+        )
 
     results_path = save_results(payload)
     print(f"\nResults saved to {results_path}", file=sys.stderr)

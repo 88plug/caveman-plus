@@ -10,11 +10,42 @@ COMPRESSIBLE_EXTENSIONS = {".md", ".txt", ".markdown", ".rst", ".typ", ".typst",
 
 # Extensions that are code/config and should be skipped
 SKIP_EXTENSIONS = {
-    ".py", ".js", ".ts", ".tsx", ".jsx", ".json", ".yaml", ".yml",
-    ".toml", ".env", ".lock", ".css", ".scss", ".html", ".xml",
-    ".sql", ".sh", ".bash", ".zsh", ".go", ".rs", ".java", ".c",
-    ".cpp", ".h", ".hpp", ".rb", ".php", ".swift", ".kt", ".lua",
-    ".dockerfile", ".makefile", ".csv", ".ini", ".cfg",
+    ".py",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".env",
+    ".lock",
+    ".css",
+    ".scss",
+    ".html",
+    ".xml",
+    ".sql",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".go",
+    ".rs",
+    ".java",
+    ".c",
+    ".cpp",
+    ".h",
+    ".hpp",
+    ".rb",
+    ".php",
+    ".swift",
+    ".kt",
+    ".lua",
+    ".dockerfile",
+    ".makefile",
+    ".csv",
+    ".ini",
+    ".cfg",
 }
 
 # Patterns that indicate a line is code
@@ -55,7 +86,7 @@ def _is_yaml_content(lines: list[str]) -> bool:
         elif stripped.startswith("- ") and ":" in stripped:
             yaml_indicators += 1
     # If most non-empty lines look like YAML
-    non_empty = sum(1 for l in lines[:30] if l.strip())
+    non_empty = sum(1 for line in lines[:30] if line.strip())
     return non_empty > 0 and yaml_indicators / non_empty > 0.6
 
 
@@ -71,7 +102,11 @@ def detect_file_type(filepath: Path) -> str:
     if ext in COMPRESSIBLE_EXTENSIONS:
         return "natural_language"
     if ext in SKIP_EXTENSIONS:
-        return "code" if ext not in {".json", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".env"} else "config"
+        return (
+            "code"
+            if ext not in {".json", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".env"}
+            else "config"
+        )
 
     # Extensionless files (like CLAUDE.md, TODO) — check content
     if not ext:
@@ -87,8 +122,8 @@ def detect_file_type(filepath: Path) -> str:
         if _is_yaml_content(lines):
             return "config"
 
-        code_lines = sum(1 for l in lines if l.strip() and _is_code_line(l))
-        non_empty = sum(1 for l in lines if l.strip())
+        code_lines = sum(1 for line in lines if line.strip() and _is_code_line(line))
+        non_empty = sum(1 for line in lines if line.strip())
         if non_empty > 0 and code_lines / non_empty > 0.4:
             return "code"
 

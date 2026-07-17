@@ -71,8 +71,10 @@ class CompressSafetyTests(unittest.TestCase):
             original = "# Heading\n\nThe quick brown fox jumps over the lazy dog.\n"
             compressed = "# Heading\n\nFox jump dog.\n"
             path = self._file_with(Path(tmp), original)
-            with mock.patch.object(compress_mod, "call_claude", return_value=compressed), \
-                 mock.patch.object(compress_mod, "validate") as v:
+            with (
+                mock.patch.object(compress_mod, "call_claude", return_value=compressed),
+                mock.patch.object(compress_mod, "validate") as v,
+            ):
                 v.return_value = mock.Mock(is_valid=True, errors=[], warnings=[])
                 ok = compress_mod.compress_file(path)
             self.assertTrue(ok)

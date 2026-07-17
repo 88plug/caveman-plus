@@ -35,7 +35,9 @@ class HookScriptTests(unittest.TestCase):
             self.run_cmd(["bash", "src/hooks/install.sh"], home)
 
             statusline = hooks_dir / "caveman-statusline.sh"
-            self.assertTrue(statusline.exists(), "upgrade should install statusline script")
+            self.assertTrue(
+                statusline.exists(), "upgrade should install statusline script"
+            )
 
             settings = json.loads((home / ".claude" / "settings.json").read_text())
             self.assertIn("statusLine", settings)
@@ -48,7 +50,11 @@ class HookScriptTests(unittest.TestCase):
             hooks_dir = claude_dir / "hooks"
             hooks_dir.mkdir(parents=True)
 
-            for name in ("caveman-activate.js", "caveman-mode-tracker.js", "caveman-statusline.sh"):
+            for name in (
+                "caveman-activate.js",
+                "caveman-mode-tracker.js",
+                "caveman-statusline.sh",
+            ):
                 (hooks_dir / name).write_text("")
 
             settings = {
@@ -75,7 +81,9 @@ class HookScriptTests(unittest.TestCase):
                     ],
                 }
             }
-            (claude_dir / "settings.json").write_text(json.dumps(settings, indent=2) + "\n")
+            (claude_dir / "settings.json").write_text(
+                json.dumps(settings, indent=2) + "\n"
+            )
 
             result = self.run_cmd(["bash", "src/hooks/install.sh"], home)
 
@@ -83,7 +91,10 @@ class HookScriptTests(unittest.TestCase):
 
             updated = json.loads((claude_dir / "settings.json").read_text())
             self.assertIn("statusLine", updated)
-            self.assertIn(str(hooks_dir / "caveman-statusline.sh"), updated["statusLine"]["command"])
+            self.assertIn(
+                str(hooks_dir / "caveman-statusline.sh"),
+                updated["statusLine"]["command"],
+            )
 
     def test_uninstall_preserves_custom_statusline(self):
         with tempfile.TemporaryDirectory(prefix="caveman-hooks-uninstall-") as tmp:
@@ -92,7 +103,11 @@ class HookScriptTests(unittest.TestCase):
             hooks_dir = claude_dir / "hooks"
             hooks_dir.mkdir(parents=True)
 
-            for name in ("caveman-activate.js", "caveman-mode-tracker.js", "caveman-statusline.sh"):
+            for name in (
+                "caveman-activate.js",
+                "caveman-mode-tracker.js",
+                "caveman-statusline.sh",
+            ):
                 (hooks_dir / name).write_text("")
 
             settings = {
@@ -123,7 +138,9 @@ class HookScriptTests(unittest.TestCase):
                     ],
                 },
             }
-            (claude_dir / "settings.json").write_text(json.dumps(settings, indent=2) + "\n")
+            (claude_dir / "settings.json").write_text(
+                json.dumps(settings, indent=2) + "\n"
+            )
 
             self.run_cmd(["bash", "src/hooks/uninstall.sh"], home)
 

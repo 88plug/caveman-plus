@@ -238,10 +238,18 @@ def dry_run(prompts, model, trials):
 
 def main():
     parser = argparse.ArgumentParser(description="Benchmark caveman vs normal Claude")
-    parser.add_argument("--trials", type=int, default=3, help="Trials per prompt per mode (default: 3)")
-    parser.add_argument("--dry-run", action="store_true", help="Print config, no API calls")
-    parser.add_argument("--update-readme", action="store_true", help="Update README.md benchmark table")
-    parser.add_argument("--model", default="claude-sonnet-4-20250514", help="Model to use")
+    parser.add_argument(
+        "--trials", type=int, default=3, help="Trials per prompt per mode (default: 3)"
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print config, no API calls"
+    )
+    parser.add_argument(
+        "--update-readme", action="store_true", help="Update README.md benchmark table"
+    )
+    parser.add_argument(
+        "--model", default="claude-sonnet-4-20250514", help="Model to use"
+    )
     args = parser.parse_args()
 
     prompts = load_prompts()
@@ -255,7 +263,10 @@ def main():
 
     client = anthropic.Anthropic()
 
-    print(f"Running benchmarks: {len(prompts)} prompts x 2 modes x {args.trials} trials", file=sys.stderr)
+    print(
+        f"Running benchmarks: {len(prompts)} prompts x 2 modes x {args.trials} trials",
+        file=sys.stderr,
+    )
     print(f"Model: {args.model}", file=sys.stderr)
     print(file=sys.stderr)
 
@@ -263,7 +274,9 @@ def main():
     rows, summary = compute_stats(results)
     table_md = format_table(rows, summary)
 
-    json_path = save_results(results, rows, summary, args.model, args.trials, skill_hash)
+    json_path = save_results(
+        results, rows, summary, args.model, args.trials, skill_hash
+    )
     print(f"\nResults saved to {json_path}", file=sys.stderr)
 
     if args.update_readme:
