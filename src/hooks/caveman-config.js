@@ -7,14 +7,14 @@
 //      - $XDG_CONFIG_HOME/caveman/config.json (any platform, if set)
 //      - ~/.config/caveman/config.json (macOS / Linux fallback)
 //      - %APPDATA%\caveman\config.json (Windows fallback)
-//   3. 'full'
+//   3. 'full-plus' (88plug edition default)
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
 const VALID_MODES = [
-  'off', 'lite', 'full', 'ultra',
+  'off', 'lite', 'full', 'full-plus', 'ultra',
   'wenyan-lite', 'wenyan', 'wenyan-full', 'wenyan-ultra',
   'commit', 'review', 'compress'
 ];
@@ -54,8 +54,8 @@ function getDefaultMode() {
     // Config file doesn't exist or is invalid — fall through
   }
 
-  // 3. Default
-  return 'full';
+  // 3. 88plug edition default (see skills/caveman/SKILL.md)
+  return 'full-plus';
 }
 
 // Symlink-safe flag file write.

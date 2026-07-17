@@ -2,8 +2,8 @@
   "name": "caveman-installer",
   "version": "0.1.0",
   "description": "Caveman installer — detects your AI coding agents and installs caveman for each one.",
-  "license": "MIT",
-  "author": "Julius Brussee",
+  "license": "FSL-1.1-ALv2",
+  "author": "88plug <andrew@88plug.com>",
   "homepage": "https://github.com/88plug/caveman-plus",
   "repository": {
     "type": "git",
@@ -30,6 +30,6 @@
     "commands/",
     "dist/caveman.skill",
     "README.md",
-    "LICENSE"
+    "LICENSE.md"
   ]
 }

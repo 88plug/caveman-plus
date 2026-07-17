@@ -118,12 +118,18 @@ process.stdin.on('end', () => {
     // — never inject untrusted bytes into model context.
     const activeMode = readFlag(flagPath);
     if (activeMode && !INDEPENDENT_MODES.has(activeMode)) {
+      let extra = "Drop articles/filler/pleasantries/hedging. Fragments OK. " +
+        "Code/commits/security: write normal.";
+      if (activeMode === 'full-plus') {
+        extra =
+          "full-plus: newest ask only; one default path; smallest usable artifact; " +
+          "plain mechanism for explainers; root-cause+fix for bugs. " +
+          "Code/commits/security: write normal.";
+      }
       process.stdout.write(JSON.stringify({
         hookSpecificOutput: {
           hookEventName: "UserPromptSubmit",
-          additionalContext: "CAVEMAN MODE ACTIVE (" + activeMode + "). " +
-            "Drop articles/filler/pleasantries/hedging. Fragments OK. " +
-            "Code/commits/security: write normal."
+          additionalContext: "CAVEMAN MODE ACTIVE (" + activeMode + "). " + extra
         }
       }));
     }

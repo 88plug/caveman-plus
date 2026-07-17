@@ -154,7 +154,7 @@ All hooks honor `CLAUDE_CONFIG_DIR` for non-default Claude Code config locations
 ### `src/hooks/caveman-config.js` — shared module
 
 Exports:
-- `getDefaultMode()` — resolves default mode from `CAVEMAN_DEFAULT_MODE` env var, then `$XDG_CONFIG_HOME/caveman/config.json` / `~/.config/caveman/config.json` / `%APPDATA%\caveman\config.json`, then `'full'`
+- `getDefaultMode()` — resolves default mode from `CAVEMAN_DEFAULT_MODE` env var, then `$XDG_CONFIG_HOME/caveman/config.json` / `~/.config/caveman/config.json` / `%APPDATA%\caveman\config.json`, then `'full-plus'` (88plug edition)
 - `safeWriteFlag(flagPath, content)` — symlink-safe flag write. Refuses if flag target or its immediate parent is a symlink. Opens with `O_NOFOLLOW` where supported. Atomic temp + rename. Creates with `0600`. Protects against local attackers replacing the predictable flag path with a symlink to clobber files writable by the user. Used by both write hooks. Silent-fails on all filesystem errors.
 
 ### `src/hooks/caveman-activate.js` — SessionStart hook
@@ -171,7 +171,7 @@ Silent-fails on all filesystem errors — never blocks session start.
 Reads JSON from stdin. Three responsibilities:
 
 **1. Slash-command activation.** If prompt starts with `/caveman`, writes mode to flag file via `safeWriteFlag`:
-- `/caveman` → configured default (see `caveman-config.js`, defaults to `full`)
+- `/caveman` → configured default (see `caveman-config.js`, defaults to `full-plus`)
 - `/caveman lite` → `lite`
 - `/caveman ultra` → `ultra`
 - `/caveman wenyan` or `/caveman wenyan-full` → `wenyan` (alias) / `wenyan-full`
@@ -215,7 +215,7 @@ Each skill has a human-facing `README.md` alongside the LLM-facing `SKILL.md`. T
 
 ### Intensity levels
 
-Defined in `skills/caveman/SKILL.md`. Six levels: `lite`, `full` (default), `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`. Persists until changed or session ends.
+Defined in `skills/caveman/SKILL.md`. Levels: `lite`, `full`, `full-plus` (88plug default), `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`. Persists until changed or session ends.
 
 ### Auto-clarity rule
 

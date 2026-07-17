@@ -47,15 +47,30 @@ if (INDEPENDENT_MODES.has(mode)) {
 // Resolve the canonical label for wenyan alias
 const modeLabel = mode === 'wenyan' ? 'wenyan-full' : mode;
 
-// Read SKILL.md — the single source of truth for caveman behavior.
-// Plugin installs: __dirname = <plugin_root>/hooks/, SKILL.md at <plugin_root>/skills/caveman/SKILL.md
-// Standalone installs: __dirname = $CLAUDE_CONFIG_DIR/hooks/, SKILL.md won't exist — falls back to hardcoded rules.
-let skillContent = '';
-try {
-  skillContent = fs.readFileSync(
-    path.join(__dirname, '..', 'skills', 'caveman', 'SKILL.md'), 'utf8'
-  );
-} catch (e) { /* standalone install — will use fallback below */ }
+// Read SKILL.md — single source of truth for caveman behavior.
+// Layouts (try in order):
+//   1. CLAUDE_PLUGIN_ROOT/skills/caveman/SKILL.md (marketplace install)
+//   2. <repo>/skills/... from src/hooks → ../../skills (plugin.json uses src/hooks/)
+//   3. <plugin_root>/skills/... from hooks/ → ../skills (standalone/hooks-at-root)
+//   4. plugins/caveman/skills/... monorepo copy
+// Missing → hardcoded minimum fallback below.
+function loadSkillMd() {
+  const candidates = [
+    process.env.CLAUDE_PLUGIN_ROOT
+      ? path.join(process.env.CLAUDE_PLUGIN_ROOT, 'skills', 'caveman', 'SKILL.md')
+      : null,
+    path.join(__dirname, '..', '..', 'skills', 'caveman', 'SKILL.md'),
+    path.join(__dirname, '..', 'skills', 'caveman', 'SKILL.md'),
+    path.join(__dirname, '..', '..', 'plugins', 'caveman', 'skills', 'caveman', 'SKILL.md'),
+  ].filter(Boolean);
+  for (const p of candidates) {
+    try {
+      if (fs.existsSync(p)) return fs.readFileSync(p, 'utf8');
+    } catch (e) { /* try next */ }
+  }
+  return '';
+}
+const skillContent = loadSkillMd();
 
 let output;
 
@@ -97,7 +112,7 @@ if (skillContent) {
     'Respond terse like smart caveman. All technical substance stay. Only fluff die.\n\n' +
     '## Persistence\n\n' +
     'ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift. Still active if unsure. Off only: "stop caveman" / "normal mode".\n\n' +
-    'Current level: **' + modeLabel + '**. Switch: `/caveman lite|full|ultra`.\n\n' +
+    'Current level: **' + modeLabel + '**. Switch: `/caveman lite|full|full-plus|ultra`.\n\n' +
     '## Rules\n\n' +
     'Drop: articles (a/an/the), filler (just/really/basically/actually/simply), pleasantries (sure/certainly/of course/happy to), hedging. ' +
     'Fragments OK. Short synonyms (big not extensive, fix not "implement a solution for"). Technical terms exact. Code blocks unchanged. Errors quoted exact.\n\n' +
