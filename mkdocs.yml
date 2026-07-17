@@ -1,5 +1,7 @@
 site_name: Caveman Plus
-site_description: Token-saving output mode for Claude Code and 30+ other AI coding agents — roughly 75% fewer output tokens, benchmarked.
+site_description: >-
+  Token-saving output mode for Claude Code and 30+ other AI coding agents —
+  roughly 75% fewer output tokens, benchmarked.
 site_url: https://88plug.github.io/caveman-plus/
 repo_url: https://github.com/88plug/caveman-plus
 repo_name: 88plug/caveman-plus
@@ -10,13 +12,15 @@ strict: true
 theme:
   name: material
   features:
-    - navigation.sections   # group nav by section, uses width well
-    - navigation.top        # back-to-top button
-    - navigation.instant    # SPA-style fast page loads
-    - content.code.copy     # copy button on code blocks (needs superfences below)
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - navigation.tracking
+    - content.code.copy
+    - content.action.edit
     - search.suggest
+    - toc.follow
   palette:
-    # Light/dark toggle that follows the OS preference by default.
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
@@ -28,6 +32,10 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
 
+nav:
+  - Home: index.md
+  - Windows install: install-windows.md
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -35,8 +43,21 @@ markdown_extensions:
   - def_list
   - footnotes
   - tables
-  - pymdownx.highlight     # code highlighting (ships with mkdocs-material)
-  - pymdownx.superfences   # required for content.code.copy + nested fences
-  - pymdownx.details       # collapsible <details> admonitions
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - toc:
       permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/88plug/caveman-plus

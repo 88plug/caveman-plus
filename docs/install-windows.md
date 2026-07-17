@@ -1,6 +1,23 @@
 # Windows install fallback
 
-If `irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex` fails on Windows (issues #249, #199, #72), set up plugin-skill activation by hand. This does **not** install the standalone hooks or the statusline — for those, run the unified Node installer afterwards: `npx -y github:88plug/caveman-plus -- --only claude` (or `node bin/install.js --only claude` from a clone).
+If `irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex`
+fails on Windows (issues
+[#249](https://github.com/88plug/caveman-plus/issues/249),
+[#199](https://github.com/88plug/caveman-plus/issues/199),
+[#72](https://github.com/88plug/caveman-plus/issues/72)), set up plugin-skill
+activation by hand.
+
+!!! warning
+    This path does **not** install the standalone hooks or the statusline.
+    For those, run the unified Node installer afterwards:
+
+    ```powershell
+    npx -y github:88plug/caveman-plus -- --only claude
+    ```
+
+    Or from a clone: `node bin/install.js --only claude`.
+
+## Manual skill install
 
 ```powershell
 $ClaudeDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HOME ".claude" }
@@ -29,13 +46,17 @@ $marketplace.plugins = [pscustomobject]$plugins
 $marketplace | ConvertTo-Json -Depth 10 | Set-Content -Path $MarketplaceFile -Encoding UTF8
 ```
 
-Verify: `Test-Path "$PluginSkillDir\SKILL.md"` should print `True`. Restart Claude Code, then run `/caveman` to confirm the skill loads.
+Verify: `Test-Path "$PluginSkillDir\SKILL.md"` should print `True`. Restart
+Claude Code, then run `/caveman` to confirm the skill loads.
 
 ## Codex on Windows
 
-1. Enable symlinks first: `git config --global core.symlinks true` (requires Developer Mode or admin).
-2. Clone repo → Open VS Code → Codex Settings → Plugins → find "Caveman" under the local marketplace → Install → Reload Window.
-3. Codex hooks are currently disabled on Windows, so use `$caveman` to start the mode manually each session.
+1. Enable symlinks first: `git config --global core.symlinks true` (requires
+   Developer Mode or admin).
+2. Clone repo → Open VS Code → Codex Settings → Plugins → find "Caveman"
+   under the local marketplace → Install → Reload Window.
+3. Codex hooks are currently disabled on Windows, so use `$caveman` to start
+   the mode manually each session.
 
 ## `npx skills` symlink fallback
 
@@ -49,7 +70,7 @@ npx skills add 88plug/caveman-plus --copy
 
 Paste this into the agent's system prompt or rules file:
 
-```
+```text
 Terse like caveman. Technical substance exact. Only fluff die.
 Drop: articles, filler (just/really/basically), pleasantries, hedging.
 Fragments OK. Short synonyms. Code unchanged.
@@ -57,3 +78,9 @@ Pattern: [thing] [action] [reason]. [next step].
 ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift.
 Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
 ```
+
+!!! tip
+    Prefer the one-liner when it works:
+    `irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex`.
+    Full matrix:
+    [INSTALL.md](https://github.com/88plug/caveman-plus/blob/main/INSTALL.md).
