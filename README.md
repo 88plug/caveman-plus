@@ -4,27 +4,25 @@
 
 # caveman-plus
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/88plug/caveman-plus)
-
-Token-saving output mode for Claude Code and 30+ other AI coding agents.
-Makes the agent answer in compressed "caveman" prose — roughly **75% fewer
-output tokens**, full technical accuracy kept.
+Claude Code plugin for token optimization and prompt compression — compressed "caveman" output for Claude, Codex, Cursor, and 30+ AI coding agents. ~75% fewer output tokens, full technical accuracy.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)
-[![Docs](https://img.shields.io/badge/docs-online-2ea44f?style=flat)](https://88plug.github.io/caveman-plus/)
 [![License: FSL-1.1-ALv2](https://img.shields.io/badge/license-FSL--1.1--ALv2-blue?style=flat)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-online-2ea44f?style=flat)](https://88plug.github.io/caveman-plus/)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-8A2BE2?style=flat)](https://github.com/88plug/claude-code-plugins)
+[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/88plug/caveman-plus)
 
 </div>
 
 ## Install
 
-### Claude Code plugin (recommended)
-
-```bash
-claude plugin marketplace add 88plug/claude-code-plugins
-claude plugin install caveman-plus@88plug
+```text
+/plugin marketplace add 88plug/claude-code-plugins
+/plugin install caveman-plus@88plug
 ```
+
+> [!TIP]
+> That is the whole Claude Code setup. Type `/caveman` (or say "talk like caveman") and replies compress until you say "normal mode" or "stop caveman".
 
 ### One-liner for every agent on the machine
 
@@ -39,36 +37,15 @@ irm https://raw.githubusercontent.com/88plug/caveman-plus/main/install.ps1 | iex
 ```
 
 Needs Node 18+. ~30 seconds. Skips agents you do not have. Safe to re-run.
-Full matrix and per-agent flags: [INSTALL.md](./INSTALL.md). Docs site:
+Full matrix and per-agent flags: [INSTALL.md](./INSTALL.md). Docs:
 [88plug.github.io/caveman-plus](https://88plug.github.io/caveman-plus/).
-
-## Multi-agent install
-
-Claude Code loads the **repo-root** plugin (`.claude-plugin/`). The `plugins/caveman/`
-tree is a **Codex / multi-agent distribution mirror** (CI-synced skills) — not a second
-Claude marketplace package.
-
-| Agent | Command | Auto-activates? |
-| --- | --- | :-: |
-| **Claude Code** | `claude plugin marketplace add 88plug/claude-code-plugins && claude plugin install caveman-plus@88plug` | Yes |
-| **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` | Yes |
-| **Codex CLI** | `npx skills add 88plug/caveman-plus -a codex` | Per-session `/caveman` |
-| **Cursor** | `npx skills add 88plug/caveman-plus -a cursor` | Optional `--with-init` |
-| **Windsurf / Cline** | `npx skills add 88plug/caveman-plus -a windsurf` / `-a cline` | Optional `--with-init` |
-| **opencode / OpenClaw** | `npx -y github:88plug/caveman-plus -- --only opencode` / `--only openclaw` | Yes |
-
-```bash
-# Preview / list / one agent
-npx -y github:88plug/caveman-plus -- --dry-run
-npx -y github:88plug/caveman-plus -- --list
-npx -y github:88plug/caveman-plus -- --only cursor --with-init
-```
 
 ## Quickstart
 
-1. Type `/caveman` (or say "talk like caveman").
-2. Ask a question — reply comes back compressed.
-3. Turn off with "normal mode" or "stop caveman".
+1. Install with the two `/plugin` lines above.
+2. Type `/caveman` (or say "talk like caveman").
+3. Ask a question — the reply comes back compressed.
+4. Turn off with "normal mode" or "stop caveman".
 
 Verbose:
 
@@ -81,6 +58,26 @@ Caveman (same fix):
 > [!NOTE]
 > caveman-plus changes **output tokens only**. Reasoning and thinking tokens
 > are untouched. Wins: readability, speed, lower output cost.
+
+## What it does
+
+caveman-plus is a Claude Code plugin and multi-agent skill set for token optimization. It strips filler, pleasantries, hedging, and articles while keeping technical substance byte-exact — code, APIs, paths, and errors stay intact.
+
+Default intensity is **`full-plus`** (88plug edition). Fork of
+[JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman). Credit:
+Julius Brussee.
+
+## Features
+
+| Feature | What it does |
+| --- | --- |
+| Session compression | Every reply compressed until you turn it off |
+| Seven modes | `/caveman <level>` — lite through wenyan-ultra |
+| Slash commands | Commits, PR review, stats, memory-file compression |
+| Statusline badge | Claude Code lifetime tokens-saved counter |
+| Cavecrew subagents | Investigator / builder / reviewer (~60% smaller tool results) |
+| MCP shrink | Compresses tool descriptions from any MCP server |
+| Multi-agent | Claude Code, Codex, Gemini, Cursor, Windsurf, Cline, Copilot, 30+ |
 
 ## Modes (intensity levels)
 
@@ -106,27 +103,6 @@ Three caveman subagents — tool results ~60% smaller than vanilla Explore/edit/
 
 Decision guide skill: `cavecrew`. Chain: investigator → builder → reviewer.
 
-## What it does
-
-Drops a skill that strips filler, pleasantries, hedging, and articles while
-keeping technical substance byte-exact (code, APIs, paths, errors).
-
-88plug edition ships `full-plus` as the default intensity. Fork of
-[JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman). Credit:
-Julius Brussee.
-
-## Features
-
-| Feature | What it does |
-| --- | --- |
-| Session compression | Every reply compressed until you turn it off |
-| Seven modes | `/caveman <level>` — lite through wenyan-ultra |
-| Slash commands | Commits, PR review, stats, memory-file compression |
-| Statusline badge | Claude Code lifetime tokens-saved counter |
-| Cavecrew subagents | Investigator / builder / reviewer |
-| MCP shrink | Compresses tool descriptions from any MCP server |
-| Multi-agent | Claude Code, Codex, Gemini, Cursor, Windsurf, Cline, Copilot, 30+ |
-
 ## Commands and skills
 
 | Command / skill | What it does |
@@ -146,6 +122,28 @@ Claude Code statusline: `[CAVEMAN] 12.4k` for lifetime tokens saved. Updates
 on each `/caveman-stats` run. Silence with `CAVEMAN_STATUSLINE_SAVINGS=0`.
 
 </details>
+
+## Multi-agent install
+
+Claude Code loads the **repo-root** plugin (`.claude-plugin/`). The `plugins/caveman/`
+tree is a **Codex / multi-agent distribution mirror** (CI-synced skills) — not a second
+Claude marketplace package.
+
+| Agent | Command | Auto-activates? |
+| --- | --- | :-: |
+| **Claude Code** | `/plugin marketplace add 88plug/claude-code-plugins` then `/plugin install caveman-plus@88plug` | Yes |
+| **Gemini CLI** | `gemini extensions install https://github.com/88plug/caveman-plus` | Yes |
+| **Codex CLI** | `npx skills add 88plug/caveman-plus -a codex` | Per-session `/caveman` |
+| **Cursor** | `npx skills add 88plug/caveman-plus -a cursor` | Optional `--with-init` |
+| **Windsurf / Cline** | `npx skills add 88plug/caveman-plus -a windsurf` / `-a cline` | Optional `--with-init` |
+| **opencode / OpenClaw** | `npx -y github:88plug/caveman-plus -- --only opencode` / `--only openclaw` | Yes |
+
+```bash
+# Preview / list / one agent
+npx -y github:88plug/caveman-plus -- --dry-run
+npx -y github:88plug/caveman-plus -- --list
+npx -y github:88plug/caveman-plus -- --only cursor --with-init
+```
 
 ## How it works
 
