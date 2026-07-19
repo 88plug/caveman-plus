@@ -55,7 +55,7 @@ curl -fsSL https://raw.githubusercontent.com/88plug/caveman-plus/main/install.sh
 !!! note
     Full matrix, every flag, and per-agent detail live in
     [INSTALL.md](https://github.com/88plug/caveman-plus/blob/main/INSTALL.md).
-    Windows manual fallback: [Windows install](install-windows.md).
+    Windows manual fallback: [Windows install](https://github.com/88plug/caveman-plus/blob/main/install-windows.md).
 
 ## Multi-agent install
 
@@ -287,7 +287,7 @@ not the verbose default — so the delta is honest.
 
 - [INSTALL.md](https://github.com/88plug/caveman-plus/blob/main/INSTALL.md) — full install matrix, flags, per-agent detail
 - [CLAUDE.md](https://github.com/88plug/caveman-plus/blob/main/CLAUDE.md) — maintainer guide (hooks, file ownership, CI)
-- [Windows install](install-windows.md) — manual fallback when `irm | iex` fails
+- [Windows install](https://github.com/88plug/caveman-plus/blob/main/install-windows.md) — manual fallback when `irm | iex` fails
 - [Issues](https://github.com/88plug/caveman-plus/issues) — bugs, features, questions
 
 ## Contributing

@@ -1,7 +1,5 @@
 site_name: Caveman Plus
-site_description: >-
-  Token-saving output mode for Claude Code and 30+ other AI coding agents —
-  roughly 75% fewer output tokens, benchmarked.
+site_description: 'Claude Code plugin for token optimization and prompt compression — compressed "caveman" output for Claude, Codex, Cursor, and 30+ AI coding agents. ~75% fewer output tokens, full technical accuracy.'
 site_url: https://88plug.github.io/caveman-plus/
 repo_url: https://github.com/88plug/caveman-plus
 repo_name: 88plug/caveman-plus
