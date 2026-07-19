@@ -21,6 +21,14 @@ Claude Code plugin for token optimization and prompt compression — compressed 
 /plugin install caveman-plus@88plug
 ```
 
+### Grok Build
+
+```text
+grok plugin marketplace add 88plug/claude-code-plugins
+grok plugin install caveman-plus@88plug --trust
+```
+
+
 > [!TIP]
 > That is the whole Claude Code setup. Type `/caveman` (or say "talk like caveman") and replies compress until you say "normal mode" or "stop caveman".
 

@@ -25,6 +25,14 @@ Or inside Claude Code:
 /plugin install caveman-plus@88plug
 ```
 
+### Grok Build
+
+```text
+grok plugin marketplace add 88plug/claude-code-plugins
+grok plugin install caveman-plus@88plug --trust
+```
+
+
 ### One-liner for every agent on the machine
 
 ```bash
