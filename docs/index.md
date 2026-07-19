@@ -1,7 +1,7 @@
 # caveman-plus
 
-Token-saving output mode for Claude Code and 30+ other AI coding agents.
-Makes the agent answer in compressed "caveman" prose — roughly **75% fewer
+Token optimization for Claude Code and Grok — multi-agent caveman compression
+for 30+ AI coding agents. Compressed "caveman" prose — roughly **75% fewer
 output tokens**, full technical accuracy kept.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)

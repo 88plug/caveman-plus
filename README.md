@@ -4,7 +4,7 @@
 
 # caveman-plus
 
-Claude Code plugin for token optimization and prompt compression — compressed "caveman" output for Claude, Codex, Cursor, and 30+ AI coding agents. ~75% fewer output tokens, full technical accuracy.
+Token optimization for Claude Code and Grok — multi-agent caveman compression for Codex, Cursor, and 30+ agents. ~75% fewer output tokens, full technical accuracy.
 
 [![plugin-validate](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml/badge.svg)](https://github.com/88plug/caveman-plus/actions/workflows/plugin-validate.yml)
 [![License: FSL-1.1-ALv2](https://img.shields.io/badge/license-FSL--1.1--ALv2-blue?style=flat)](LICENSE)
@@ -15,6 +15,8 @@ Claude Code plugin for token optimization and prompt compression — compressed 
 </div>
 
 ## Install
+
+### Claude Code
 
 ```text
 /plugin marketplace add 88plug/claude-code-plugins
